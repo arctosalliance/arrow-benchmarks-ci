@@ -57,7 +57,7 @@ mutation {
     - User = new-machine-name@some-domain.com
 
 ### Create ec2 benchmark machine
-- Go to https://us-east-2.console.aws.amazon.com/ec2/v2/home?region=us-east-2#Instances:
+- Go to https://us-east-1.console.aws.amazon.com/ec2/v2/home?region=us-east-1#Instances:
 - Click Launch instance from template
 - Source template = benchmark-machine
 - Select Instance type that you need

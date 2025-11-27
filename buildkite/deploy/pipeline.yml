@@ -18,7 +18,7 @@ steps:
     command: |
       docker build -t ${FLASK_APP} .
       docker tag ${FLASK_APP}:latest ${DOCKER_REGISTRY}/${FLASK_APP}:${BUILDKITE_COMMIT}
-      aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin ${DOCKER_REGISTRY}
+      aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${DOCKER_REGISTRY}
       docker push ${DOCKER_REGISTRY}/${FLASK_APP}:${BUILDKITE_COMMIT}
 
   - label: "Run Migrations"
@@ -28,7 +28,7 @@ steps:
     concurrency: 1
     concurrency_group: "arrow-bci-deploy"
     command: |
-      aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin ${DOCKER_REGISTRY}
+      aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${DOCKER_REGISTRY}
       docker pull ${DOCKER_REGISTRY}/${FLASK_APP}:${BUILDKITE_COMMIT}
       docker-compose -f envs/prod/docker-compose.yml run app alembic upgrade head
 
@@ -39,7 +39,7 @@ steps:
     concurrency: 1
     concurrency_group: "arrow-bci-deploy"
     command: |
-      aws eks --region us-east-2 update-kubeconfig --name ${EKS_CLUSTER}
+      aws eks --region us-east-1 update-kubeconfig --name ${EKS_CLUSTER}
       kubectl config set-context --current --namespace=${NAMESPACE}
       cat envs/prod/secrets.yml | sed "\
         s/{{BUILDKITE_API_TOKEN}}/$(echo -n $BUILDKITE_API_TOKEN | base64 -w 0)/g;\
@@ -75,7 +75,7 @@ steps:
     concurrency: 1
     concurrency_group: "arrow-bci-deploy"
     command: |
-      aws eks --region us-east-2 update-kubeconfig --name ${EKS_CLUSTER}
+      aws eks --region us-east-1 update-kubeconfig --name ${EKS_CLUSTER}
       kubectl config set-context --current --namespace=${NAMESPACE}
       cat envs/prod/deploy.yml | sed "\
         s/{{BUILDKITE_COMMIT}}/${BUILDKITE_COMMIT}/g;\
@@ -91,7 +91,7 @@ steps:
     concurrency: 1
     concurrency_group: "arrow-bci-deploy"
     command: |
-      aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin ${DOCKER_REGISTRY}
+      aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${DOCKER_REGISTRY}
       docker pull ${DOCKER_REGISTRY}/${FLASK_APP}:${BUILDKITE_COMMIT}
       docker-compose -f envs/prod/docker-compose.yml run app python -c 'from buildkite.deploy.update_machine_configs import update_machine_configs; update_machine_configs()'
 
