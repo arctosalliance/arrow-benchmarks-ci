@@ -160,6 +160,8 @@ resource "buildkite_pipeline" "conbench_pipelines" {
     FLASK_APP:       "conbench"
     PYPI_API_BASE_URL:    "${var.pypi_api_base_url}"
     PYPI_PROJECT:         "${var.pypi_project}"
+    EKS_CLUSTER:          "${var.eks_cluster_name}"
+    NAMESPACE:            "default"
   agents:
     queue: "${aws_cloudformation_stack.conbench.parameters.BuildkiteQueue}"
   steps:

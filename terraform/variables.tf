@@ -304,6 +304,12 @@ variable "slack_api_base_url" {
   default     = "https://slack.com/api"
 }
 
+variable "eks_cluster_name" {
+    description = "EKS cluster name"
+    type        = string
+    default     = "conbench-prod"
+}
+
 variable "default_tags" {
   description = "Default tags to apply to all resources"
   type        = map(string)

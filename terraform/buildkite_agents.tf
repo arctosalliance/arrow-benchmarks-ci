@@ -157,6 +157,13 @@ resource "aws_iam_policy" "buildkite_agent" {
           "ssm:GetParametersByPath"
         ]
         Resource = "arn:aws:ssm:${var.aws_region}:*:parameter/buildkite/*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "eks:DescribeCluster"
+        ]
+        Resource = "arn:aws:eks:${var.aws_region}:*:cluster/${var.eks_cluster_name}"
       }
     ]
   })
@@ -183,7 +190,7 @@ resource "aws_cloudformation_stack" "conbench" {
     # InstanceType                          = "t3.micro"
     InstanceOperatingSystem               = "linux"
     InstanceRoleName                      = "buildkite-agent-stack-conbench-Role"
-    # ManagedPolicyARN                      = join(",", [aws_iam_policy.buildkite_agent.arn, "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"])
+    ManagedPolicyARNs                     = join(",", [aws_iam_policy.buildkite_agent.arn, "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"])
     AgentsPerInstance                     = 1
     ECRAccessPolicy                       = "full"
     MinSize                               = 0
@@ -237,7 +244,7 @@ resource "aws_cloudformation_stack" "arrow-bci-test" {
     BuildkiteQueue                        = "new-arrow-bci-test"
     # InstanceType                          = "t3.micro"
     InstanceOperatingSystem               = "linux"
-    # ManagedPolicyARN                      = join(",", [aws_iam_policy.buildkite_agent.arn, "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"])
+    ManagedPolicyARNs                     = join(",", [aws_iam_policy.buildkite_agent.arn, "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"])
     AgentsPerInstance                     = 1
     ECRAccessPolicy                       = "full"
     MinSize                               = 0
@@ -262,7 +269,7 @@ resource "aws_cloudformation_stack" "arrow-bci-benchmark-build-test" {
     BuildkiteQueue                        = "new-arrow-bci-benchmark-build-test"
     # InstanceType                          = "r5.4xlarge"
     InstanceOperatingSystem               = "linux"
-    # ManagedPolicyARN                      = join(",", [aws_iam_policy.buildkite_agent.arn, "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"])
+    ManagedPolicyARNs                     = join(",", [aws_iam_policy.buildkite_agent.arn, "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"])
     AgentsPerInstance                     = 1
     ECRAccessPolicy                       = "full"
     MinSize                               = 0
