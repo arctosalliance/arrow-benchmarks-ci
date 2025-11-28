@@ -1,0 +1,47 @@
+# Copy this file to terraform.tfvars and fill in your values
+# cp terraform.tfvars.example terraform.tfvars
+
+# General Configuration
+aws_region  = "us-east-1"
+aws_profile = "arrow-admin"  # Leave empty to use default credentials
+environment = "prod"
+
+# Allowed CIDR blocks to access EKS API (restrict this in production!)
+# Example: ["1.2.3.4/32", "10.0.0.0/8"]
+allowed_cidr_blocks = ["0.0.0.0/0"]
+
+# VPC Configuration
+vpc_cidr = "10.0.0.0/16"
+
+# EKS Configuration
+kubernetes_version = "1.28"
+
+# Node Group Configuration
+node_group_desired_size = 2
+node_group_min_size     = 1
+node_group_max_size     = 4
+node_instance_types     = ["t3.medium"]
+node_disk_size          = 20
+
+# RDS Configuration
+
+# IMPORTANT: If restoring from snapshot, provide the snapshot identifier
+# Leave empty to create a new database instance
+db_snapshot_identifier = "" # e.g., "arn:aws:rds:us-east-2:123456789012:snapshot:my-snapshot"
+
+db_engine_version      = "15.5"
+db_instance_class      = "db.t3.medium"
+db_allocated_storage   = 100
+db_max_allocated_storage = 500
+
+# Database credentials (only used for NEW instances, not snapshots)
+# If restoring from snapshot, these are ignored
+db_name     = "conbench"
+db_username = "conbench_admin"
+db_password = "CHANGE_ME_STRONG_PASSWORD_HERE" # At least 8 characters
+
+# Backup and HA
+db_backup_retention_period = 7
+db_multi_az               = false # Set to true for production high availability
+db_skip_final_snapshot    = false # Set to true for dev/test environments
+db_apply_immediately      = false # Set to true to apply changes immediately

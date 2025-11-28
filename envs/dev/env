@@ -10,7 +10,6 @@ export DB_USERNAME=postgres
 export ENV=DEV
 export GITHUB_API_BASE_URL="https://api.github.com"
 export GITHUB_API_TOKEN=token
-# export GITHUB_REPO="arctosalliance/arrow-benchmarks-ci"
 export GITHUB_REPO="arctosalliance/arrow-benchmarks-ci"
 export GITHUB_REPO_WITH_BENCHMARKABLE_COMMITS="apache/arrow"
 export GITHUB_SECRET="github_secret"
