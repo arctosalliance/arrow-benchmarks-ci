@@ -20,7 +20,7 @@ services:
       ENV: "DEV"
       FLASK_DEBUG: 0
       GITHUB_API_BASE_URL: "http://mocked-integrations:9999/github"
-      GITHUB_REPO: "voltrondata-labs/arrow-benchmarks-ci"
+      GITHUB_REPO: "arctosalliance/arrow-benchmarks-ci"
       GITHUB_REPO_WITH_BENCHMARKABLE_COMMITS: "apache/arrow"
       GITHUB_SECRET: "github_secret"
       MAX_COMMITS_TO_FETCH: 5
