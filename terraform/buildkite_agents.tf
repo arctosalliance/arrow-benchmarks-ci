@@ -183,6 +183,7 @@ resource "aws_cloudformation_stack" "conbench" {
   parameters = {
     VpcId                                 = aws_vpc.main.id
     Subnets                               = join(",", [aws_subnet.public[0].id, aws_subnet.public[1].id])
+    BootstrapScriptUrl                    = var.buildkite_bootstrap_script_url
     BuildkiteAgentTokenParameterStorePath = aws_ssm_parameter.buildkite_agent_token.name
     BuildkiteQueue                        = "new-conbench"
     # Image built on this same folder, packer subfolder
