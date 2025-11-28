@@ -325,7 +325,7 @@ variable "default_tags" {
 variable "buildkite_bootstrap_script_url" {
     description = "URL of the Buildkite agent bootstrap script"
     type        = string
-    default     = "https://raw.githubusercontent.com/rok/conbench/refs/heads/main/terraform/buildkite-bootstrap.sh"
+    default     = "https://raw.githubusercontent.com/arctosalliance/arrow-benchmarks-ci/refs/heads/main/terraform/buildkite-bootstrap.sh"
 }
 
 # variable "buildkite_agent_amis" {
