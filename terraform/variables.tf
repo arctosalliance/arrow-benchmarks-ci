@@ -237,6 +237,12 @@ variable "conbench_url" {
   default     = "https://conbench.arrow-dev.org"
 }
 
+variable "db_host" {
+  description = "Conbench db host"
+  type        = string
+  default     = "conbench.arrow-dev.org"
+}
+
 variable "db_port" {
   description = "Database port"
   type        = string
@@ -267,10 +273,17 @@ variable "github_repo_with_benchmarkable_commits" {
   default     = "apache/arrow"
 }
 
+variable "github_api_token" {
+    description = "GitHub API token for authentication (optional)"
+    type        = string
+    sensitive   = true
+    default     = ""
+}
+
 variable "max_commits_to_fetch" {
   description = "Maximum number of commits to fetch"
   type        = string
-  default     = "100"
+  default     = "10"
 }
 
 variable "pypi_api_base_url" {
@@ -322,3 +335,52 @@ variable "buildkite_bootstrap_script_url" {
 #     "amd64-macos" = "ami-0ef51d32f7d6e780d" # macOS Tahoe 26.x us-east-1
 #   }
 # }
+
+# Arrow BCI Database Variables
+variable "arrow_bci_db_snapshot_identifier" {
+  description = "Snapshot identifier to restore Arrow BCI database from (e.g., arrow-bci-251121)"
+  type        = string
+  default     = ""
+}
+
+variable "arrow_bci_db_engine_version" {
+  description = "PostgreSQL engine version for Arrow BCI database (must match snapshot version)"
+  type        = string
+  default     = "14.17"
+}
+
+variable "arrow_bci_db_instance_class" {
+  description = "Instance class for Arrow BCI database"
+  type        = string
+  default     = "db.t4g.large"
+}
+
+variable "arrow_bci_db_max_allocated_storage" {
+  description = "Maximum allocated storage in GB for Arrow BCI database autoscaling"
+  type        = number
+  default     = 500
+}
+
+variable "arrow_bci_db_backup_retention_period" {
+  description = "Number of days to retain automated backups for Arrow BCI database"
+  type        = number
+  default     = 7
+}
+
+variable "arrow_bci_db_multi_az" {
+  description = "Enable Multi-AZ for Arrow BCI database high availability"
+  type        = bool
+  default     = false
+}
+
+variable "arrow_bci_db_skip_final_snapshot" {
+  description = "Skip final snapshot when destroying the Arrow BCI database"
+  type        = bool
+  default     = false
+}
+
+variable "arrow_bci_db_apply_immediately" {
+  description = "Apply changes immediately for Arrow BCI database (vs during maintenance window)"
+  type        = bool
+  default     = false
+}

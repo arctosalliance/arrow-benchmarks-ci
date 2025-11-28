@@ -88,6 +88,39 @@ output "rds_master_username" {
   sensitive   = true
 }
 
+# Arrow BCI RDS Outputs
+output "arrow_bci_rds_endpoint" {
+  description = "Arrow BCI RDS instance endpoint"
+  value       = aws_db_instance.arrow_bci.endpoint
+}
+
+output "arrow_bci_rds_address" {
+  description = "Arrow BCI RDS instance address (hostname)"
+  value       = aws_db_instance.arrow_bci.address
+}
+
+output "arrow_bci_rds_instance_port" {
+  description = "Arrow BCI RDS instance port"
+  value       = aws_db_instance.arrow_bci.port
+}
+
+output "arrow_bci_rds_database_name" {
+  description = "Name of the Arrow BCI database"
+  value       = aws_db_instance.arrow_bci.db_name
+}
+
+output "arrow_bci_rds_master_username" {
+  description = "Master username for Arrow BCI RDS"
+  value       = aws_db_instance.arrow_bci.username
+  sensitive   = true
+}
+
+output "arrow_bci_db_connection_string" {
+  description = "Arrow BCI database connection information (use with caution in logs)"
+  value       = "postgresql://${aws_db_instance.arrow_bci.username}@${aws_db_instance.arrow_bci.address}:${aws_db_instance.arrow_bci.port}/${aws_db_instance.arrow_bci.db_name}"
+  sensitive   = true
+}
+
 # Security Group Outputs
 output "eks_nodes_security_group_id" {
   description = "Security group ID for EKS worker nodes"

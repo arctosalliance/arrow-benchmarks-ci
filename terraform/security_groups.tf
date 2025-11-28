@@ -111,6 +111,16 @@ resource "aws_security_group_rule" "rds_ingress_from_eks_nodes" {
   source_security_group_id = aws_eks_cluster.conbench.vpc_config[0].cluster_security_group_id
 }
 
+resource "aws_security_group_rule" "rds_ingress_from_vpc" {
+  description       = "Allow all VPC resources (including Buildkite agents) to access RDS"
+  type              = "ingress"
+  from_port         = 5432
+  to_port           = 5432
+  protocol          = "tcp"
+  security_group_id = aws_security_group.rds.id
+  cidr_blocks       = [var.vpc_cidr]
+}
+
 resource "aws_security_group_rule" "rds_egress_all" {
   description       = "Allow all outbound traffic"
   type              = "egress"

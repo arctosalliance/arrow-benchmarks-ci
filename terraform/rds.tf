@@ -159,3 +159,74 @@ resource "aws_iam_role_policy_attachment" "rds_monitoring" {
 #     }
 #   )
 # }
+
+# RDS PostgreSQL Instance for Arrow BCI
+# Restored from snapshot arrow-bci-251121
+resource "aws_db_instance" "arrow_bci" {
+  identifier = "${local.cluster_name}-arrow-bci-db"
+
+  # Database Configuration
+  engine         = "postgres"
+  engine_version = var.arrow_bci_db_engine_version
+  instance_class = var.arrow_bci_db_instance_class
+
+  # Storage config inherited from snapshot
+  max_allocated_storage = var.arrow_bci_db_max_allocated_storage
+  allocated_storage     = var.db_snapshot_identifier == "" ? var.db_allocated_storage : null
+  # Database Credentials (not used if restoring from snapshot)
+  db_name  = var.db_snapshot_identifier == "" ? var.db_name : null
+  username = var.db_snapshot_identifier == "" ? var.db_username : null
+  password = var.db_snapshot_identifier == "" ? var.db_password : null
+
+  # Restore from snapshot
+  snapshot_identifier = var.arrow_bci_db_snapshot_identifier
+
+  # Network Configuration
+  db_subnet_group_name   = aws_db_subnet_group.conbench.name
+  vpc_security_group_ids = [aws_security_group.rds.id]
+  publicly_accessible    = false
+  port                   = 5432
+
+  # Backup Configuration
+  backup_retention_period   = var.arrow_bci_db_backup_retention_period
+  backup_window             = "03:00-04:00"
+  maintenance_window        = "mon:04:00-mon:05:00"
+  delete_automated_backups  = false
+  skip_final_snapshot       = var.arrow_bci_db_skip_final_snapshot
+  final_snapshot_identifier = var.arrow_bci_db_skip_final_snapshot ? null : "${local.cluster_name}-arrow-bci-final-snapshot-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
+
+  # Performance and Monitoring
+  enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
+  monitoring_interval             = 60
+  monitoring_role_arn             = aws_iam_role.rds_monitoring.arn
+  performance_insights_enabled    = true
+  performance_insights_retention_period = 7
+
+  # High Availability
+  multi_az = var.arrow_bci_db_multi_az
+
+  # Parameter Group - reuse the conbench parameter group
+  parameter_group_name = aws_db_parameter_group.conbench.name
+
+  # Upgrades
+  auto_minor_version_upgrade = true
+  apply_immediately         = var.arrow_bci_db_apply_immediately
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${local.cluster_name}-arrow-bci-db"
+    }
+  )
+
+  lifecycle {
+    ignore_changes = [
+      snapshot_identifier,
+      final_snapshot_identifier,
+      allocated_storage,
+      storage_type,
+      storage_encrypted,
+      kms_key_id,
+    ]
+  }
+}

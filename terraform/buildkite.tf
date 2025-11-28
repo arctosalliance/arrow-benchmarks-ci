@@ -158,6 +158,8 @@ resource "buildkite_pipeline" "conbench_pipelines" {
   env:
     DOCKER_REGISTRY: "${aws_ssm_parameter.docker_registry.value}"
     FLASK_APP:       "conbench"
+    PYPI_API_BASE_URL:    "${var.pypi_api_base_url}"
+    PYPI_PROJECT:         "${var.pypi_project}"
   agents:
     queue: "${aws_cloudformation_stack.conbench.parameters.BuildkiteQueue}"
   steps:
@@ -201,8 +203,26 @@ resource "buildkite_pipeline" "arrow_bci_pipelines" {
   repository     = "https://github.com/arctosalliance/arrow-benchmarks-ci.git"
   steps          = <<-EOT
   env:
-    DOCKER_REGISTRY: "${aws_ssm_parameter.docker_registry.value}"
-    FLASK_APP:       "conbench"
+    DOCKER_REGISTRY:      "${aws_ssm_parameter.docker_registry.value}"
+    FLASK_APP:            "conbench"
+    DB_PORT:              "${var.db_port}"
+    GITHUB_API_BASE_URL:  "${var.github_api_base_url}"
+    MAX_COMMITS_TO_FETCH: "${var.max_commits_to_fetch}"
+    CONBENCH_URL:         "${var.conbench_url}"
+    DB_USERNAME:          "${var.db_username}"
+    DB_HOST:              "${var.db_host}"
+    DB_PASSWORD:          "${var.db_password}"
+    DB_NAME:              "${var.db_name}"
+    GITHUB_API_TOKEN:     "${var.github_api_token}"
+    PYPI_API_BASE_URL:    "${var.pypi_api_base_url}"
+    PYPI_PROJECT:         "${var.pypi_project}"
+    # BUILDKITE_API_BASE_URL: "${var.buildkite_api_base_url}"
+    # BUILDKITE_ORG: "${var.buildkite_org}"
+    # ENV: "${var.environment}"
+    # FLASK_APP: "${var.flask_app}"
+    # GITHUB_REPO: "${var.github_repo}"
+    # GITHUB_REPO_WITH_BENCHMARKABLE_COMMITS: "${var.github_repo_with_benchmarkable_commits}"
+    # SLACK_API_BASE_URL: "${var.slack_api_base_url}"
   agents:
     queue: "${each.value.queue}"
   steps:
