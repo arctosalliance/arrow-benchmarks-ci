@@ -15,7 +15,7 @@ class Buildkite:
         self.session.mount("http://", adapter)
         self.session.headers = {"Authorization": f"Bearer {Config.BUILDKITE_API_TOKEN}"}
         self.base_url = (
-            f"{Config.BUILDKITE_API_BASE_URL}/v2/organizations/{Config.BUILDKITE_ORG}"
+            f"{Config.BUILDKITE_API_BASE_URL}/organizations/{Config.BUILDKITE_ORG}"
         )
 
     def create_pipeline(self, pipeline_name, agent_queue):

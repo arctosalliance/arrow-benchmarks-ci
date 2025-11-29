@@ -80,6 +80,42 @@ resource "aws_iam_openid_connect_provider" "eks" {
   tags = local.common_tags
 }
 
-# ConfigMap for aws-auth (allows nodes to join cluster)
-# This is handled automatically by EKS for managed node groups,
-# but included here for reference if you need custom RBAC
+# ConfigMap for aws-auth (allows nodes to join cluster and Buildkite agents to access)
+# The managed node groups are automatically added by EKS, but we need to manually
+# add the Buildkite agent role so it can run kubectl commands
+
+locals {
+  # Buildkite agent role ARN - created by CloudFormation stack
+  buildkite_conbench_agent_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/buildkite-agent-stack-conbench-Role"
+}
+
+resource "kubernetes_config_map_v1_data" "aws_auth" {
+  metadata {
+    name      = "aws-auth"
+    namespace = "kube-system"
+  }
+
+  data = {
+    mapRoles = yamlencode(concat(
+      # EKS managed node group role
+      [{
+        rolearn  = aws_iam_role.eks_nodes.arn
+        username = "system:node:{{EC2PrivateDNSName}}"
+        groups   = ["system:bootstrappers", "system:nodes"]
+      }],
+      # Buildkite agent role with cluster admin access
+      [{
+        rolearn  = local.buildkite_conbench_agent_role_arn
+        username = "buildkite-agent"
+        groups   = ["system:masters"]
+      }]
+    ))
+  }
+
+  force = true
+
+  depends_on = [
+    aws_eks_cluster.conbench,
+    aws_eks_node_group.conbench
+  ]
+}

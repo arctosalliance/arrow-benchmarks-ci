@@ -24,8 +24,8 @@ resource "buildkite_agent_token" "token_for_agents_in_arrow_computing_aws" {
 #     GITHUB_REPO: "${var.github_repo}"
 #     GITHUB_REPO_WITH_BENCHMARKABLE_COMMITS: "${var.github_repo_with_benchmarkable_commits}"
 #     MAX_COMMITS_TO_FETCH: "${var.max_commits_to_fetch}"
-#     PYPI_API_BASE_URL: "${var.pypi_api_base_url}"
-#     PYPI_PROJECT: "${var.pypi_project}"
+#     PIPY_API_BASE_URL: "${var.pypi_api_base_url}"
+#     PIPY_PROJECT: "${var.pypi_project}"
 #     SLACK_API_BASE_URL: "${var.slack_api_base_url}"
 #   agents:
 #     queue: "${each.value.queue}"
@@ -153,13 +153,13 @@ locals {
 resource "buildkite_pipeline" "conbench_pipelines" {
   for_each       = local.new-conbench_pipelines
   name           = each.key
-  repository     = "https://github.com/arctosalliance/arrow-benchmarks-ci.git"
+  repository     = "https://github.com/arctosalliance/conbench.git"
   steps          = <<-EOT
   env:
     DOCKER_REGISTRY: "${aws_ssm_parameter.docker_registry.value}"
     FLASK_APP:       "conbench"
-    PYPI_API_BASE_URL:    "${var.pypi_api_base_url}"
-    PYPI_PROJECT:         "${var.pypi_project}"
+    PIPY_API_BASE_URL:    "${var.pypi_api_base_url}"
+    PIPY_PROJECT:         "${var.pypi_project}"
     EKS_CLUSTER:          "${var.eks_cluster_name}"
     NAMESPACE:            "default"
   agents:
@@ -216,14 +216,13 @@ resource "buildkite_pipeline" "arrow_bci_pipelines" {
     DB_PASSWORD:          "${var.db_password}"
     DB_NAME:              "${var.db_name}"
     GITHUB_API_TOKEN:     "${var.github_api_token}"
-    PYPI_API_BASE_URL:    "${var.pypi_api_base_url}"
-    PYPI_PROJECT:         "${var.pypi_project}"
-    # BUILDKITE_API_BASE_URL: "${var.buildkite_api_base_url}"
-    # BUILDKITE_ORG: "${var.buildkite_org}"
-    # ENV: "${var.environment}"
-    # FLASK_APP: "${var.flask_app}"
-    # GITHUB_REPO: "${var.github_repo}"
-    # GITHUB_REPO_WITH_BENCHMARKABLE_COMMITS: "${var.github_repo_with_benchmarkable_commits}"
+    PIPY_API_BASE_URL:    "${var.pypi_api_base_url}"
+    PIPY_PROJECT:         "${var.pypi_project}"
+    BUILDKITE_API_BASE_URL: "${var.buildkite_api_base_url}"
+    BUILDKITE_ORG:        "${var.buildkite_org}"
+    ENV:                  "${var.environment}"
+    GITHUB_REPO:          "${var.github_repo}"
+    GITHUB_REPO_WITH_BENCHMARKABLE_COMMITS: "${var.github_repo_with_benchmarkable_commits}"
     # SLACK_API_BASE_URL: "${var.slack_api_base_url}"
   agents:
     queue: "${each.value.queue}"
