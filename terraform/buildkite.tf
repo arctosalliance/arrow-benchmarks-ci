@@ -181,7 +181,7 @@ resource "buildkite_pipeline" "conbench_pipelines" {
 # resource "buildkite_pipeline" "webhooks_pipelines" {
 #   for_each       = local.webhooks_pipelines
 #   name           = each.key
-#   repository     = "git@github.com:voltrondata-labs/webhooks.git"
+#   repository     = "git@github.com:arctosalliance/webhooks.git"
 #   steps          = <<-EOT
 #   agents:
 #     queue: "${aws_cloudformation_stack.conbench.parameters.BuildkiteQueue}"
@@ -223,6 +223,7 @@ resource "buildkite_pipeline" "arrow_bci_pipelines" {
     ENV:                  "${var.environment}"
     GITHUB_REPO:          "${var.github_repo}"
     GITHUB_REPO_WITH_BENCHMARKABLE_COMMITS: "${var.github_repo_with_benchmarkable_commits}"
+    BUILDKITE_API_TOKEN:  "${var.buildkite_api_token}"
     # SLACK_API_BASE_URL: "${var.slack_api_base_url}"
   agents:
     queue: "${each.value.queue}"

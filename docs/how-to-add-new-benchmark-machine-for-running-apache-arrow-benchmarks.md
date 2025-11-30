@@ -88,7 +88,7 @@ export MACHINE=<MACHINE>
 export GITHUB_PAT=<GITHUB_PAT>
 
 # Install Apache Arrow C++, Python, R, Java and JavaScript dependencies and Buildkite Agent
-curl -LO https://raw.githubusercontent.com/voltrondata-labs/arrow-benchmarks-ci/main/scripts/setup-benchmark-machine-ubuntu-20.04-for-apache-arrow-benchmarks.sh
+curl -LO https://raw.githubusercontent.com/arctosalliance/arrow-benchmarks-ci/main/scripts/setup-benchmark-machine-ubuntu-20.04-for-apache-arrow-benchmarks.sh
 chmod +x setup-benchmark-machine-ubuntu-20.04-for-apache-arrow-benchmarks.sh
 source ./setup-benchmark-machine-ubuntu-20.04-for-apache-arrow-benchmarks.sh
 
@@ -129,7 +129,7 @@ export MACHINE=<MACHINE>
 export GITHUB_PAT=<GITHUB_PAT>
 
 # Install Apache Arrow C++ dependencies and Buildkite Agent
-curl -LO https://raw.githubusercontent.com/voltrondata-labs/arrow-benchmarks-ci/main/scripts/setup-benchmark-machine-macos-for-apache-arrow-benchmarks.sh
+curl -LO https://raw.githubusercontent.com/arctosalliance/arrow-benchmarks-ci/main/scripts/setup-benchmark-machine-macos-for-apache-arrow-benchmarks.sh
 chmod +x setup-benchmark-machine-macos-for-apache-arrow-benchmarks.sh
 source ./setup-benchmark-machine-macos-for-apache-arrow-benchmarks.sh
 
@@ -166,7 +166,7 @@ tail -f "$(brew --prefix)"/var/log/buildkite-agent.log
 # Clone arrow-benchmarks-ci repo
 su - buildkite-agent # or whatever user you used to start buildkite-agent on MacOS
 bash
-git clone https://github.com/voltrondata-labs/arrow-benchmarks-ci.git
+git clone https://github.com/arctosalliance/arrow-benchmarks-ci.git
 cd arrow-benchmarks-ci/
 
 # Export env vars

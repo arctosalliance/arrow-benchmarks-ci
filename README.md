@@ -2,12 +2,12 @@
 
 Arrow Benchmarks CI is responsible for
 - orchestrating and prioritizing benchmark builds for [Apache Arrow](https://github.com/apache/arrow) based on
-the [list of benchmarks](https://github.com/voltrondata-labs/benchmarks/blob/main/benchmarks.json) in [Benchmarks repo](https://github.com/voltrondata-labs/benchmarks)
+the [list of benchmarks](https://github.com/arctosalliance/benchmarks/blob/main/benchmarks.json) in [Benchmarks repo](https://github.com/arctosalliance/benchmarks)
 - publishing benchmark results to [Apache Arrow](https://github.com/apache/arrow) pull requests associated with commits to master branch ([example](https://github.com/apache/arrow/pull/11843#issuecomment-986912639))
 - posting benchmarks results to [Conbench](https://conbench.ursa.dev/)
 
 Arrow Benchmarks CI consists of
-- [Buildkite pipelines](https://buildkite.com/apache-arrow) and scripts for running benchmarks on [benchmark machines](https://github.com/voltrondata-labs/arrow-benchmarks-ci/blob/main/config.py#L47)
+- [Buildkite pipelines](https://buildkite.com/apache-arrow) and scripts for running benchmarks on [benchmark machines](https://github.com/arctosalliance/arrow-benchmarks-ci/blob/main/config.py#L47)
 - Arrow BCI API service responsible for
     - listening to [apache/arrow](https://github.com/apache/arrow) Pull Request comment events
     so benchmark builds can be scheduled for pull requests with an `@ursabot please benchmark` comment

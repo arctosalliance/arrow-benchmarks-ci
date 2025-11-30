@@ -11,7 +11,7 @@ from tests.helpers import (
 )
 
 expected_setup_commands = [
-    ("git clone https://github.com/voltrondata-labs/benchmarks.git", ".", True),
+    ("git clone https://github.com/arctosalliance/benchmarks.git", ".", True),
     ("git fetch && git checkout main", "benchmarks", True),
     ("pip install -e .", "benchmarks", True),
 ]
@@ -206,12 +206,12 @@ def test_run_benchmarks():
     repo = [
         deepcopy(x)
         for x in repos_with_benchmark_groups
-        if x["repo"].endswith("voltrondata-labs/benchmarks.git")
+        if x["repo"].endswith("arctosalliance/benchmarks.git")
     ][0]
     # These tests should use benchmarks.json in benchmarks repo but should not be affected any new benchmarks
     # that added since 2b217db086260ab3bb243e26253b7c1de0180777
     repo["url_for_benchmark_groups_list_json"] = (
-        "https://raw.githubusercontent.com/voltrondata-labs/benchmarks/2b217db086260ab3bb243e26253b7c1de0180777/benchmarks.json"
+        "https://raw.githubusercontent.com/arctosalliance/benchmarks/2b217db086260ab3bb243e26253b7c1de0180777/benchmarks.json"
     )
     for test in tests:
         print(test)
@@ -237,7 +237,7 @@ def test_run_arrowbench_benchmarks(monkeypatch):
     # These tests should use benchmarks.json in arrowbench repo but should not be affected any new benchmarks
     # that added since c5e5af241f17d27aadc01548f283a2a977151b91
     repo["url_for_benchmark_groups_list_json"] = (
-        "https://raw.githubusercontent.com/voltrondata-labs/arrowbench/c5e5af241f17d27aadc01548f283a2a977151b91/inst/benchmarks.json"
+        "https://raw.githubusercontent.com/arctosalliance/arrowbench/c5e5af241f17d27aadc01548f283a2a977151b91/inst/benchmarks.json"
     )
 
     filter_with_arrowbench_r_only_benchmarks = deepcopy(filter_with_r_only_benchmarks)
@@ -248,7 +248,7 @@ def test_run_arrowbench_benchmarks(monkeypatch):
 
     expected_setup_commands = (
         [
-            ("git clone https://github.com/voltrondata-labs/arrowbench.git", ".", True),
+            ("git clone https://github.com/arctosalliance/arrowbench.git", ".", True),
             ("git fetch && git checkout main", "arrowbench", True),
         ]
         + expected_setup_commands_for_r_benchmarks
@@ -310,7 +310,7 @@ def test_run_adapter_benchmarks():
     # These tests should use benchmarks.json in arrow-benchmarks-ci repo but should not be affected any new benchmarks
     # that added since 1ca33e8800a11624faf89a85af817ca83e473f56
     repo["url_for_benchmark_groups_list_json"] = (
-        "https://raw.githubusercontent.com/voltrondata-labs/arrow-benchmarks-ci/1ca33e8800a11624faf89a85af817ca83e473f56/adapters/benchmarks.json"
+        "https://raw.githubusercontent.com/arctosalliance/arrow-benchmarks-ci/1ca33e8800a11624faf89a85af817ca83e473f56/adapters/benchmarks.json"
     )
 
     filters = {
@@ -325,7 +325,7 @@ def test_run_adapter_benchmarks():
 
     expected_setup_commands = [
         (
-            "git clone https://github.com/voltrondata-labs/arrow-benchmarks-ci.git",
+            "git clone https://github.com/arctosalliance/arrow-benchmarks-ci.git",
             ".",
             True,
         ),

@@ -45,7 +45,7 @@
     "name": "arrow-bci-benchmark-on-ursa-thinkcentre-m75q",
     "description": null,
     "slug": "arrow-bci-benchmark-on-ursa-thinkcentre-m75q",
-    "repository": "https://github.com/voltrondata-labs/arrow-benchmarks-ci.git",
+    "repository": "https://github.com/arctosalliance/arrow-benchmarks-ci.git",
     "cluster_id": null,
     "branch_configuration": null,
     "default_branch": "main",
@@ -75,7 +75,7 @@
         "publish_blocked_as_pending": false,
         "use_step_key_as_commit_status": false,
         "filter_enabled": true,
-        "repository": "voltrondata-labs/arrow-benchmarks-ci"
+        "repository": "arctosalliance/arrow-benchmarks-ci"
       },
       "webhook_url": "https://webhook.buildkite.com/deliver/bb5e17d3d4a4307fa49ad68b92610d49ac2a160cc8278f9307"
     },

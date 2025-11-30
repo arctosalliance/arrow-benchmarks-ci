@@ -34,7 +34,7 @@ To filter Python and R benchmarks by name:
 To filter C++ benchmarks by archery --suite-filter and --benchmark-filter:
 `@ursabot please benchmark command=cpp-micro --suite-filter=arrow-compute-vector-selection-benchmark --benchmark-filter=TakeStringRandomIndicesWithNulls/262144/2`
 
-For other `command=cpp-micro` options, please see https://github.com/voltrondata-labs/benchmarks/blob/main/benchmarks/cpp_micro_benchmarks.py
+For other `command=cpp-micro` options, please see https://github.com/arctosalliance/benchmarks/blob/main/benchmarks/cpp_micro_benchmarks.py
 """
 
 

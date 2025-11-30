@@ -5,7 +5,7 @@ Please follow [these instructions](https://github.com/conbench/conbench#authorin
 
 Examples of benchmarks integrated with Conbench:
 
-- https://github.com/voltrondata-labs/benchmarks/tree/main/benchmarks
+- https://github.com/arctosalliance/benchmarks/tree/main/benchmarks
 - https://github.com/ElenaHenderson/benchmarkable-repo/blob/master/benchmarks.py
 - https://github.com/apache/arrow-rs/blob/master/conbench/_criterion.py
 - https://github.com/apache/arrow-datafusion/blob/master/conbench/_criterion.py
@@ -33,7 +33,7 @@ to execute each benchmark group even if one benchmark group fails.
 
 Examples of `benchmarks.json` in repos with benchmarks integrated with Conbench:
 
-- https://github.com/voltrondata-labs/benchmarks/blob/main/benchmarks.json
+- https://github.com/arctosalliance/benchmarks/blob/main/benchmarks.json
 - https://github.com/ElenaHenderson/benchmarkable-repo/blob/master/benchmarks.json
 - https://github.com/apache/arrow-rs/blob/master/conbench/benchmarks.json
 - https://github.com/apache/arrow-datafusion/blob/master/conbench/benchmarks.json
