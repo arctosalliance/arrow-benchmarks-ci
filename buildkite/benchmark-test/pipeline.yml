@@ -7,14 +7,14 @@ steps:
         required: true
         multiple: true
         options:
-          - label: "amd64-c6a-4xlarge-linux"
-            value: "amd64-c6a-4xlarge-linux"
-          - label: "amd64-m5-4xlarge-linux"
-            value: "amd64-m5-4xlarge-linux"
-          - label: "arm64-t4g-2xlarge-linux"
-            value: "arm64-t4g-2xlarge-linux"
-          - label: "test-mac-arm (Please avoid using this machine for running test builds)"
-            value: "test-mac-arm"
+          - label: "new-amd64-c6a-4xlarge-linux"
+            value: "new-amd64-c6a-4xlarge-linux"
+          - label: "new-amd64-m5-4xlarge-linux"
+            value: "new-amd64-m5-4xlarge-linux"
+          - label: "new-arm64-t4g-2xlarge-linux"
+            value: "new-arm64-t4g-2xlarge-linux"
+          - label: "new-test-mac-arm (Please avoid using this machine for running test builds)"
+            value: "new-test-mac-arm"
 
   - label: "Test Benchmark Builds"
     command: |
