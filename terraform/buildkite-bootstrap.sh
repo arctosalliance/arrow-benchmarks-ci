@@ -41,4 +41,6 @@ case $( uname -m ) in
 esac
 curl -LO https://repo.anaconda.com/miniconda/$conda_installer
 bash $conda_installer -b -p "/var/lib/buildkite-agent/miniconda3"
+# Change ownership to buildkite-agent user
+chown -R buildkite-agent:buildkite-agent /var/lib/buildkite-agent/miniconda3
 su - buildkite-agent -c "/var/lib/buildkite-agent/miniconda3/bin/conda init bash"
