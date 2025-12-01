@@ -102,5 +102,4 @@ steps:
     depends_on: "update-machine-configs"
     concurrency: 1
     concurrency_group: "arrow-bci-deploy"
-    command: curl --retry 5 --fail https://arrow-bci.ursa.dev/health-check
-#    command: curl --retry 5 --fail https://arrow-bci.arrow-dev.org/health-check
+    command: curl --retry 5 --fail https://arrow-bci.arrow-dev.org/health-check
