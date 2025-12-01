@@ -220,7 +220,7 @@ resource "aws_cloudformation_stack" "arrow-bci" {
     # InstanceType                          = "t3.micro"
     InstanceOperatingSystem               = "linux"
     InstanceRoleName                      = "buildkite-agent-stack-arrow-bci-Role"
-    # ManagedPolicyARN                      = join(",", [aws_iam_policy.buildkite_agent.arn, "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"])
+    ManagedPolicyARNs                     = join(",", [aws_iam_policy.buildkite_agent.arn, "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"])
     AgentsPerInstance                     = 1
     ECRAccessPolicy                       = "full"
     MinSize                               = 0

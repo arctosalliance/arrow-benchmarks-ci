@@ -95,6 +95,7 @@ steps:
       docker pull ${DOCKER_REGISTRY}/${FLASK_APP}:${BUILDKITE_COMMIT}
       docker-compose -f envs/prod/docker-compose.yml run app python -c 'from buildkite.deploy.update_machine_configs import update_machine_configs; update_machine_configs()'
 
+  # TODO: Switch to arrow-bci.arrow-dev.org once available
   - label: "Health Check"
     key: "health-check"
     if: build.branch == 'main'
@@ -102,3 +103,4 @@ steps:
     concurrency: 1
     concurrency_group: "arrow-bci-deploy"
     command: curl --retry 5 --fail https://arrow-bci.ursa.dev/health-check
+#    command: curl --retry 5 --fail https://arrow-bci.arrow-dev.org/health-check

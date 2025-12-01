@@ -324,4 +324,4 @@ After setup, you can:
 
 For more information, see:
 - [Buildkite AWS Stack Documentation](https://github.com/buildkite/elastic-ci-stack-for-aws)
-- [Arrow Benchmarks CI](https://github.com/ursacomputing/arrow-benchmarks-ci)
+- [Arrow Benchmarks CI](https://github.com/arctosalliance/arrow-benchmarks-ci)

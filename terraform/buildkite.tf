@@ -224,6 +224,7 @@ resource "buildkite_pipeline" "arrow_bci_pipelines" {
     GITHUB_REPO:          "${var.github_repo}"
     GITHUB_REPO_WITH_BENCHMARKABLE_COMMITS: "${var.github_repo_with_benchmarkable_commits}"
     BUILDKITE_API_TOKEN:  "${var.buildkite_api_token}"
+    EKS_CLUSTER:          "${var.eks_cluster_name}"
     # SLACK_API_BASE_URL: "${var.slack_api_base_url}"
   agents:
     queue: "${each.value.queue}"

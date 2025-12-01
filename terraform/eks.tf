@@ -85,8 +85,9 @@ resource "aws_iam_openid_connect_provider" "eks" {
 # add the Buildkite agent role so it can run kubectl commands
 
 locals {
-  # Buildkite agent role ARN - created by CloudFormation stack
-  buildkite_conbench_agent_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/buildkite-agent-stack-conbench-Role"
+  # Buildkite agent role ARNs - created by CloudFormation stacks
+  buildkite_conbench_agent_role_arn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/buildkite-agent-stack-conbench-Role"
+  buildkite_arrow_bci_agent_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/buildkite-agent-stack-arrow-bci-Role"
 }
 
 resource "kubernetes_config_map_v1_data" "aws_auth" {
@@ -103,10 +104,16 @@ resource "kubernetes_config_map_v1_data" "aws_auth" {
         username = "system:node:{{EC2PrivateDNSName}}"
         groups   = ["system:bootstrappers", "system:nodes"]
       }],
-      # Buildkite agent role with cluster admin access
+      # Buildkite conbench agent role with cluster admin access
       [{
         rolearn  = local.buildkite_conbench_agent_role_arn
-        username = "buildkite-agent"
+        username = "buildkite-conbench-agent"
+        groups   = ["system:masters"]
+      }],
+      # Buildkite arrow-bci agent role with cluster admin access
+      [{
+        rolearn  = local.buildkite_arrow_bci_agent_role_arn
+        username = "buildkite-arrow-bci-agent"
         groups   = ["system:masters"]
       }]
     ))
