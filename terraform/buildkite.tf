@@ -162,6 +162,7 @@ resource "buildkite_pipeline" "conbench_pipelines" {
     PIPY_PROJECT:         "${var.pypi_project}"
     EKS_CLUSTER:          "${var.eks_cluster_name}"
     NAMESPACE:            "default"
+    DISTRIBUTION_COMMITS: "100"
   agents:
     queue: "${aws_cloudformation_stack.conbench.parameters.BuildkiteQueue}"
   steps:
