@@ -390,3 +390,35 @@ variable "arrow_bci_db_apply_immediately" {
   type        = bool
   default     = false
 }
+
+# Arrow BCI Kubernetes Variables
+variable "arrow_bci_image" {
+  description = "Docker image for Arrow BCI application"
+  type        = string
+  default     = "855673865593.dkr.ecr.us-east-1.amazonaws.com/conbench:latest"
+}
+
+variable "arrow_bci_replicas" {
+  description = "Number of replicas for Arrow BCI deployment"
+  type        = number
+  default     = 1
+}
+
+variable "slack_api_token" {
+  description = "Slack API token for notifications"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
+variable "arrow_bci_create_dns_record" {
+  description = "Create Route53 DNS record for arrow-bci.arrow-dev.org (set to false initially, update after ELB is created)"
+  type        = bool
+  default     = false
+}
+
+variable "arrow_bci_elb_dns_name" {
+  description = "Arrow BCI ELB DNS name (get this after the LoadBalancer service is created)"
+  type        = string
+  default     = ""
+}

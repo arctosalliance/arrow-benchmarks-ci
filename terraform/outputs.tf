@@ -229,3 +229,24 @@ output "deployment_hints" {
 #   description = "CloudFormation stack names for Buildkite agents"
 #   value       = { for k, v in aws_cloudformation_stack.buildkite_agents : k => v.name }
 # }
+
+# Arrow BCI Kubernetes Outputs
+output "arrow_bci_url" {
+  description = "Arrow BCI application URL"
+  value       = "https://arrow-bci.arrow-dev.org"
+}
+
+output "arrow_bci_health_check_url" {
+  description = "Arrow BCI health check endpoint"
+  value       = "https://arrow-bci.arrow-dev.org/health-check"
+}
+
+output "arrow_bci_service_hostname" {
+  description = "Arrow BCI LoadBalancer hostname (run 'kubectl get svc arrow-bci-service' to see actual value)"
+  value       = "Check with: kubectl get svc arrow-bci-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'"
+}
+
+output "arrow_bci_deployment_name" {
+  description = "Arrow BCI deployment name"
+  value       = kubernetes_deployment.arrow_bci.metadata[0].name
+}
