@@ -40,13 +40,13 @@ steps:
 
   - wait
 
-  - label: "Run benchalerts pipelines"
-    concurrency: 1
-    concurrency_group: "arrow-bci-deploy"
-    command:
-      - docker-compose -f envs/prod/docker-compose.yml run app python -m buildkite.schedule_and_publish.run_benchalerts
-
-  - wait
+#  - label: "Run benchalerts pipelines"
+#    concurrency: 1
+#    concurrency_group: "arrow-bci-deploy"
+#    command:
+#      - docker-compose -f envs/prod/docker-compose.yml run app python -m buildkite.schedule_and_publish.run_benchalerts
+#
+#  - wait
 
   - block: "Reschedule Failed Builds"
     prompt: "Select machines that need failed builds rescheduled"
