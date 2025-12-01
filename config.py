@@ -83,7 +83,7 @@ class Config:
     }
 
     MACHINES = {
-        "new-test-mac-arm": {
+        "test-mac-arm": {
             "info": "Supported benchmark langs: C++, Python, R",
             "default_filters": {
                 "arrow-commit": {
@@ -99,7 +99,7 @@ class Config:
             "max_builds": 1,
             "build_timeout": 150,
         },
-        "new-amd64-c6a-4xlarge-linux": {
+        "amd64-c6a-4xlarge-linux": {
             "info": "Supported benchmark langs: C++, Java",
             "default_filters": {
                 "arrow-commit": {
@@ -115,7 +115,7 @@ class Config:
             "max_builds": 5,
             "build_timeout": 180,
         },
-        "new-arm64-t4g-2xlarge-linux": {
+        "arm64-t4g-2xlarge-linux": {
             "info": "Supported benchmark langs: C++, Python, R",
             "default_filters": {
                 "arrow-commit": {
@@ -132,7 +132,7 @@ class Config:
             "max_builds": 2,
             "build_timeout": 180,
         },
-        "new-amd64-m5-4xlarge-linux": {
+        "amd64-m5-4xlarge-linux": {
             "info": "Supported benchmark langs: Python, R, Java, JavaScript, C++",
             "default_filters": {
                 "arrow-commit": {
