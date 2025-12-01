@@ -150,33 +150,33 @@ locals {
   }
 }
 
-# resource "buildkite_pipeline" "conbench_pipelines" {
-#   for_each       = local.new-conbench_pipelines
-#   name           = each.key
-#   repository     = "https://github.com/arctosalliance/conbench.git"
-#   steps          = <<-EOT
-#   env:
-#     DOCKER_REGISTRY: "${aws_ssm_parameter.docker_registry.value}"
-#     FLASK_APP:       "conbench"
-#     PIPY_API_BASE_URL:    "${var.pypi_api_base_url}"
-#     PIPY_PROJECT:         "${var.pypi_project}"
-#     EKS_CLUSTER:          "${var.eks_cluster_name}"
-#     NAMESPACE:            "default"
-#   agents:
-#     queue: "${aws_cloudformation_stack.conbench.parameters.BuildkiteQueue}"
-#   steps:
-#     - label: ":pipeline: Pipeline upload"
-#       command: buildkite-agent pipeline upload .buildkite/${each.value.folder}/pipeline.yml
-#   EOT
-#   default_branch = "main"
-#   provider_settings = {
-#     trigger_mode                                  = each.value.trigger_mode
-#     publish_commit_status                         = each.value.publish_commit_status
-#     build_branches                                = each.value.build_branches
-#     build_pull_requests                           = each.value.build_pull_requests
-#     skip_pull_request_builds_for_existing_commits = each.value.skip_pull_request_builds_for_existing_commits
-#   }
-# }
+resource "buildkite_pipeline" "conbench_pipelines" {
+  for_each       = local.new-conbench_pipelines
+  name           = each.key
+  repository     = "https://github.com/arctosalliance/conbench.git"
+  steps          = <<-EOT
+  env:
+    DOCKER_REGISTRY: "${aws_ssm_parameter.docker_registry.value}"
+    FLASK_APP:       "conbench"
+    PIPY_API_BASE_URL:    "${var.pypi_api_base_url}"
+    PIPY_PROJECT:         "${var.pypi_project}"
+    EKS_CLUSTER:          "${var.eks_cluster_name}"
+    NAMESPACE:            "default"
+  agents:
+    queue: "${aws_cloudformation_stack.conbench.parameters.BuildkiteQueue}"
+  steps:
+    - label: ":pipeline: Pipeline upload"
+      command: buildkite-agent pipeline upload .buildkite/${each.value.folder}/pipeline.yml
+  EOT
+  default_branch = "main"
+  provider_settings = {
+    trigger_mode                                  = each.value.trigger_mode
+    publish_commit_status                         = each.value.publish_commit_status
+    build_branches                                = each.value.build_branches
+    build_pull_requests                           = each.value.build_pull_requests
+    skip_pull_request_builds_for_existing_commits = each.value.skip_pull_request_builds_for_existing_commits
+  }
+}
 
 # resource "buildkite_pipeline" "webhooks_pipelines" {
 #   for_each       = local.webhooks_pipelines
