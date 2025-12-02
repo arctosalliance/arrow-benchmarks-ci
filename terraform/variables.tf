@@ -184,6 +184,18 @@ variable "create_www_record" {
   default     = false
 }
 
+variable "arrow_bci_create_dns_record" {
+  description = "Create Route53 A record for Arrow BCI ALB"
+  type        = bool
+  default     = true
+}
+
+variable "arrow_bci_elb_dns_name" {
+  description = "Arrow BCI ALB DNS name (get this after ingress creates the ALB)"
+  type        = string
+  default     = ""
+}
+
 variable "create_crossbow_subdomain" {
   description = "Create crossbow subdomain with CloudFront + S3"
   type        = bool

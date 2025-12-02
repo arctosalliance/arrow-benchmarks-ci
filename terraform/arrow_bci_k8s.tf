@@ -149,21 +149,15 @@ resource "kubernetes_deployment" "arrow_bci" {
   ]
 }
 
-# Service for Arrow BCI (LoadBalancer with SSL)
+# Service for Arrow BCI (NodePort)
 resource "kubernetes_service" "arrow_bci" {
   metadata {
     name      = "arrow-bci-service"
     namespace = "default"
-    annotations = {
-      "alb.ingress.kubernetes.io/target-type"                  = "ip"
-      "service.beta.kubernetes.io/aws-load-balancer-backend-protocol" = "http"
-      "service.beta.kubernetes.io/aws-load-balancer-ssl-cert"  = aws_acm_certificate.arrow_dev.arn
-      "service.beta.kubernetes.io/aws-load-balancer-ssl-ports" = "443"
-    }
   }
 
   spec {
-    type = "LoadBalancer"
+    type = "NodePort"
 
     selector = {
       app = "arrow-bci"
@@ -175,13 +169,6 @@ resource "kubernetes_service" "arrow_bci" {
       target_port = 5000
       protocol    = "TCP"
     }
-
-    port {
-      name        = "https"
-      port        = 443
-      target_port = 5000
-      protocol    = "TCP"
-    }
   }
 
   depends_on = [
@@ -189,13 +176,57 @@ resource "kubernetes_service" "arrow_bci" {
   ]
 }
 
+# Ingress for Arrow BCI
+resource "kubernetes_ingress_v1" "arrow_bci" {
+  metadata {
+    name      = "arrow-bci-ingress"
+    namespace = "default"
+    annotations = {
+      "kubernetes.io/ingress.class" : "alb"
+      "alb.ingress.kubernetes.io/scheme" : "internet-facing"
+      "alb.ingress.kubernetes.io/target-type" : "ip"
+      "alb.ingress.kubernetes.io/certificate-arn" : aws_acm_certificate.arrow_dev.arn
+    }
+  }
+
+  spec {
+    ingress_class_name = "alb"
+    rule {
+      host = "arrow-bci.arrow-dev.org"
+      http {
+        path {
+          path = "/"
+          path_type = "Prefix"
+          backend {
+            service {
+              name = "arrow-bci-service"
+              port {
+                number = 80
+              }
+            }
+          }
+        }
+      }
+    }
+    tls {
+      hosts = ["arrow-bci.arrow-dev.org"]
+      secret_name = "arrow-bci-tls"
+    }
+  }
+
+  depends_on = [
+    kubernetes_service.arrow_bci
+  ]
+}
+
 resource "aws_route53_record" "arrow_bci" {
+  count   = var.arrow_bci_create_dns_record ? 1 : 0
   zone_id = data.aws_route53_zone.arrow_dev.zone_id
   name    = "arrow-bci.arrow-dev.org"
   type    = "A"
 
   alias {
-    name                   = kubernetes_service.arrow_bci.status[0].load_balancer[0].ingress[0].hostname
+    name                   = var.arrow_bci_elb_dns_name
     zone_id                = var.elb_zone_id
     evaluate_target_health = true
   }
