@@ -19,7 +19,7 @@ resource "aws_db_instance" "conbench" {
   snapshot_identifier = var.db_snapshot_identifier
 
   # Database Credentials (not used if restoring from snapshot)
-  db_name  = var.db_snapshot_identifier == "" ? var.db_name : null
+  db_name  = var.db_snapshot_identifier == "" ? var.db_name_conbench : null
   username = var.db_snapshot_identifier == "" ? var.db_username : null
   password = var.db_snapshot_identifier == "" ? var.db_password : null
 
@@ -174,7 +174,7 @@ resource "aws_db_instance" "arrow_bci" {
   max_allocated_storage = var.arrow_bci_db_max_allocated_storage
   allocated_storage     = var.db_snapshot_identifier == "" ? var.db_allocated_storage : null
   # Database Credentials (not used if restoring from snapshot)
-  db_name  = var.db_snapshot_identifier == "" ? var.db_name : null
+  db_name  = var.db_snapshot_identifier == "" ? var.db_name_arrow_bci : null
   username = var.db_snapshot_identifier == "" ? var.db_username : null
   password = var.db_snapshot_identifier == "" ? var.db_password : null
 

@@ -163,6 +163,16 @@ resource "buildkite_pipeline" "conbench_pipelines" {
     EKS_CLUSTER:          "${var.eks_cluster_name}"
     NAMESPACE:            "default"
     DISTRIBUTION_COMMITS: "100"
+    APPLICATION_NAME: "Conbench"
+    BENCHMARKS_DATA_PUBLIC: "true"
+    CONBENCH_INTENDED_BASE_URL: "${var.conbench_url}"
+    GITHUB_API_TOKEN:     "${var.github_api_token}"
+    DB_NAME:              "${var.db_name_conbench}"
+    DB_PORT:              "${var.db_port}"
+    DB_USERNAME:          "${var.db_username}"
+    DB_HOST:              "${aws_db_instance.conbench.address}"
+    DB_PASSWORD:          "${var.db_password}"
+    # SVS_TYPE: ""  # or appropriate value
   agents:
     queue: "${aws_cloudformation_stack.conbench.parameters.BuildkiteQueue}"
   steps:
@@ -215,7 +225,7 @@ resource "buildkite_pipeline" "arrow_bci_pipelines" {
     DB_USERNAME:          "${var.db_username}"
     DB_HOST:              "${var.db_host}"
     DB_PASSWORD:          "${var.db_password}"
-    DB_NAME:              "${var.db_name}"
+    DB_NAME:              "${var.db_name_arrow_bci}"
     GITHUB_API_TOKEN:     "${var.github_api_token}"
     PIPY_API_BASE_URL:    "${var.pypi_api_base_url}"
     PIPY_PROJECT:         "${var.pypi_project}"

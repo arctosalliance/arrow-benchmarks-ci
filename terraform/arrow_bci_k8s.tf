@@ -16,7 +16,7 @@ resource "kubernetes_config_map" "arrow_bci" {
     CONBENCH_URL                            = var.conbench_url
     DB_HOST                                 = aws_db_instance.arrow_bci.address
     DB_PORT                                 = tostring(aws_db_instance.arrow_bci.port)
-    DB_NAME                                 = "conbench_prod"  # Inherited from snapshot
+    DB_NAME                                 = var.db_name_arrow_bci
     ENV                                     = var.environment
     FLASK_APP                               = var.flask_app
     GITHUB_API_BASE_URL                     = var.github_api_base_url
@@ -189,18 +189,14 @@ resource "kubernetes_service" "arrow_bci" {
   ]
 }
 
-# Route53 record for arrow-bci.arrow-dev.org
-# Note: You'll need to update this manually after the LoadBalancer is created
-# Get the ELB hostname with: kubectl get svc arrow-bci-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 resource "aws_route53_record" "arrow_bci" {
-  count   = var.arrow_bci_create_dns_record ? 1 : 0
   zone_id = data.aws_route53_zone.arrow_dev.zone_id
   name    = "arrow-bci.arrow-dev.org"
   type    = "A"
 
   alias {
-    name                   = var.arrow_bci_elb_dns_name
-    zone_id                = var.elb_zone_id  # ELB zone ID for us-east-1
+    name                   = kubernetes_service.arrow_bci.status[0].load_balancer[0].ingress[0].hostname
+    zone_id                = var.elb_zone_id
     evaluate_target_health = true
   }
 

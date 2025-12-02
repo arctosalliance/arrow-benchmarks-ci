@@ -8,7 +8,7 @@ variable "aws_region" {
 variable "aws_profile" {
   description = "AWS CLI profile to use for authentication"
   type        = string
-  default     = ""
+  default     = "arrow-admin"
 }
 
 variable "environment" {
@@ -102,6 +102,18 @@ variable "db_name" {
   description = "Database name (only used for new instances, not snapshots)"
   type        = string
   default     = "conbench"
+}
+
+variable "db_name_conbench" {
+  description = "Database name for Conbench application"
+  type        = string
+  default     = "conbench_prod"
+}
+
+variable "db_name_arrow_bci" {
+  description = "Database name for Arrow BCI application"
+  type        = string
+  default     = "postgres"
 }
 
 variable "db_username" {
@@ -411,14 +423,4 @@ variable "slack_api_token" {
   default     = ""
 }
 
-variable "arrow_bci_create_dns_record" {
-  description = "Create Route53 DNS record for arrow-bci.arrow-dev.org (set to false initially, update after ELB is created)"
-  type        = bool
-  default     = false
-}
 
-variable "arrow_bci_elb_dns_name" {
-  description = "Arrow BCI ELB DNS name (get this after the LoadBalancer service is created)"
-  type        = string
-  default     = ""
-}
