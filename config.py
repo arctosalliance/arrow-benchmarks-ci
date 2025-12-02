@@ -99,7 +99,7 @@ class Config:
             "max_builds": 1,
             "build_timeout": 150,
         },
-        "amd64-c6a-4xlarge-linux-2": {
+        "new-amd64-c6a-4xlarge-linux": {
             "info": "Supported benchmark langs: C++, Java",
             "default_filters": {
                 "arrow-commit": {
