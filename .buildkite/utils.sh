@@ -191,11 +191,12 @@ deploy() {
     stat $PROM_REMOTE_WRITE_PASSWORD_FILE_PATH
   fi
 
-  set +x
-  make jsonnet-kube-prom-manifests
-  echo "run k8s/kube-prometheus/deploy-or-update.sh, and pray that this does not impede the robustness of our deploy pipeline"
-  export CONBENCH_REPO_ROOT_DIR="$(pwd)"
-  bash k8s/kube-prometheus/deploy-or-update.sh
+# TODO: disabled as prometheus is no longer used
+#  set +x
+#  make jsonnet-kube-prom-manifests
+#  echo "run k8s/kube-prometheus/deploy-or-update.sh, and pray that this does not impede the robustness of our deploy pipeline"
+#  export CONBENCH_REPO_ROOT_DIR="$(pwd)"
+#  bash k8s/kube-prometheus/deploy-or-update.sh
 }
 
 rollback() {
