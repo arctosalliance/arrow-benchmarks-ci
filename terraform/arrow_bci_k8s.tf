@@ -235,3 +235,4 @@ resource "aws_route53_record" "arrow_bci" {
     create_before_destroy = true
   }
 }
+

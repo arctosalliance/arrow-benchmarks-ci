@@ -217,7 +217,7 @@ resource "buildkite_pipeline" "arrow_bci_pipelines" {
   steps          = <<-EOT
   env:
     DOCKER_REGISTRY:      "${aws_ssm_parameter.docker_registry.value}"
-    FLASK_APP:            "conbench"
+    FLASK_APP:            "arrow-bci"
     DB_PORT:              "${var.db_port}"
     GITHUB_API_BASE_URL:  "${var.github_api_base_url}"
     MAX_COMMITS_TO_FETCH: "${var.max_commits_to_fetch}"

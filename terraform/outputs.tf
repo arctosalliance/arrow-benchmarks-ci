@@ -246,6 +246,27 @@ output "arrow_bci_service_hostname" {
   value       = "Check with: kubectl get svc arrow-bci-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'"
 }
 
+# ECR Outputs
+output "ecr_repository_conbench_url" {
+  description = "ECR repository URL for Conbench"
+  value       = aws_ecr_repository.conbench.repository_url
+}
+
+output "ecr_repository_arrow_bci_url" {
+  description = "ECR repository URL for Arrow BCI"
+  value       = aws_ecr_repository.arrow_bci.repository_url
+}
+
+output "ecr_repository_conbench_arn" {
+  description = "ECR repository ARN for Conbench"
+  value       = aws_ecr_repository.conbench.arn
+}
+
+output "ecr_repository_arrow_bci_arn" {
+  description = "ECR repository ARN for Arrow BCI"
+  value       = aws_ecr_repository.arrow_bci.arn
+}
+
 output "arrow_bci_deployment_name" {
   description = "Arrow BCI deployment name"
   value       = kubernetes_deployment.arrow_bci.metadata[0].name
