@@ -29,7 +29,7 @@ class Machine(Base, BaseMixin):
 
     @property
     def buildkite_pipeline_name(self):
-        return f"Arrow BCI Benchmark on {self.name}"
+        return f"New Arrow BCI Benchmark on {self.name}"
 
     @property
     def buildkite_agent_queue(self):
