@@ -149,15 +149,24 @@ resource "kubernetes_deployment" "arrow_bci" {
   ]
 }
 
-# Service for Arrow BCI (NodePort)
+# Service for Arrow BCI (LoadBalancer - shares same ELB as conbench via host-based routing)
 resource "kubernetes_service" "arrow_bci" {
   metadata {
     name      = "arrow-bci-service"
     namespace = "default"
+    annotations = {
+      # Use the same load balancer as conbench by setting the same service name
+      "service.beta.kubernetes.io/aws-load-balancer-backend-protocol" = "http"
+      "service.beta.kubernetes.io/aws-load-balancer-ssl-cert"         = aws_acm_certificate.arrow_dev.arn
+      "service.beta.kubernetes.io/aws-load-balancer-ssl-ports"        = "443"
+    }
+    labels = {
+      app = "arrow-bci"
+    }
   }
 
   spec {
-    type = "NodePort"
+    type = "LoadBalancer"
 
     selector = {
       app = "arrow-bci"
@@ -169,6 +178,13 @@ resource "kubernetes_service" "arrow_bci" {
       target_port = 5000
       protocol    = "TCP"
     }
+
+    port {
+      name        = "https"
+      port        = 443
+      target_port = 5000
+      protocol    = "TCP"
+    }
   }
 
   depends_on = [
@@ -176,49 +192,54 @@ resource "kubernetes_service" "arrow_bci" {
   ]
 }
 
-# Ingress for Arrow BCI
-resource "kubernetes_ingress_v1" "arrow_bci" {
-  metadata {
-    name      = "arrow-bci-ingress"
-    namespace = "default"
-    annotations = {
-      "kubernetes.io/ingress.class" : "alb"
-      "alb.ingress.kubernetes.io/scheme" : "internet-facing"
-      "alb.ingress.kubernetes.io/target-type" : "ip"
-      "alb.ingress.kubernetes.io/certificate-arn" : aws_acm_certificate.arrow_dev.arn
-    }
-  }
+# Ingress for Arrow BCI - commented out since using LoadBalancer instead
+# Requires ALB Ingress Controller which is not currently installed
+# resource "kubernetes_ingress_v1" "arrow_bci" {
+#   metadata {
+#     name      = "arrow-bci-ingress"
+#     namespace = "default"
+#     annotations = {
+#       "kubernetes.io/ingress.class" : "alb"
+#       "alb.ingress.kubernetes.io/scheme" : "internet-facing"
+#       "alb.ingress.kubernetes.io/target-type" : "ip"
+#       "alb.ingress.kubernetes.io/certificate-arn" : aws_acm_certificate.arrow_dev.arn
+#     }
+#   }
+#
+#   spec {
+#     ingress_class_name = "alb"
+#     rule {
+#       host = "arrow-bci.arrow-dev.org"
+#       http {
+#         path {
+#           path = "/"
+#           path_type = "Prefix"
+#           backend {
+#             service {
+#               name = "arrow-bci-service"
+#               port {
+#                 number = 80
+#               }
+#             }
+#           }
+#         }
+#       }
+#     }
+#     tls {
+#       hosts = ["arrow-bci.arrow-dev.org"]
+#       secret_name = "arrow-bci-tls"
+#     }
+#   }
+#
+#   depends_on = [
+#     kubernetes_service.arrow_bci
+#   ]
+# }
 
-  spec {
-    ingress_class_name = "alb"
-    rule {
-      host = "arrow-bci.arrow-dev.org"
-      http {
-        path {
-          path = "/"
-          path_type = "Prefix"
-          backend {
-            service {
-              name = "arrow-bci-service"
-              port {
-                number = 80
-              }
-            }
-          }
-        }
-      }
-    }
-    tls {
-      hosts = ["arrow-bci.arrow-dev.org"]
-      secret_name = "arrow-bci-tls"
-    }
-  }
-
-  depends_on = [
-    kubernetes_service.arrow_bci
-  ]
-}
-
+# Route53 record for Arrow BCI pointing to its LoadBalancer
+# Note: After applying this, you'll need to get the ELB DNS name from:
+# kubectl get svc arrow-bci-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+# Then update var.arrow_bci_elb_dns_name in terraform.tfvars
 resource "aws_route53_record" "arrow_bci" {
   count   = var.arrow_bci_create_dns_record ? 1 : 0
   zone_id = data.aws_route53_zone.arrow_dev.zone_id
