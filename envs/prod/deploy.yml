@@ -46,46 +46,58 @@ kind: Service
 metadata:
   annotations:
     alb.ingress.kubernetes.io/target-type: ip
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: {{CERTIFICATE_ARN}}
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+  labels:
+    app: arrow-bci
   name: "arrow-bci-service"
   namespace: "default"
 spec:
   ports:
-  - port: 80
+  - name: http
+    port: 80
     targetPort: 5000
     protocol: TCP
-  type: NodePort
+  - name: https
+    port: 443
+    targetPort: 5000
+    protocol: TCP
+  type: LoadBalancer
   selector:
     app: "arrow-bci"
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: "arrow-bci-ingress"
-  namespace: "default"
-  annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-    alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
-    alb.ingress.kubernetes.io/certificate-arn: {{CERTIFICATE_ARN}}
-  labels:
-    app: arrow-bci-ingress
-spec:
-  rules:
-  - http:
-      paths:
-      - backend:
-          service:
-            name: ssl-redirect
-            port:
-              name: use-annotation
-        path: /*
-        pathType: ImplementationSpecific
-      - backend:
-          service:
-            name: arrow-bci-service
-            port:
-              number: 80
-        path: /*
-        pathType: ImplementationSpecific
+# Ingress removed - using LoadBalancer service type instead
+# Ingress requires ALB controller which is not installed
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: "arrow-bci-ingress"
+#   namespace: "default"
+#   annotations:
+#     kubernetes.io/ingress.class: alb
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+#     alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+#     alb.ingress.kubernetes.io/certificate-arn: {{CERTIFICATE_ARN}}
+#   labels:
+#     app: arrow-bci-ingress
+# spec:
+#   rules:
+#   - http:
+#       paths:
+#       - backend:
+#           service:
+#             name: ssl-redirect
+#             port:
+#               name: use-annotation
+#         path: /*
+#         pathType: ImplementationSpecific
+#       - backend:
+#           service:
+#             name: arrow-bci-service
+#             port:
+#               number: 80
+#         path: /*
+#         pathType: ImplementationSpecific
 
