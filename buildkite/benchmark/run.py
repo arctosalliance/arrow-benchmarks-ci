@@ -392,7 +392,7 @@ class ArrowbenchBenchmarkGroupsRunner(BenchmarkGroupsRunner):
         Run.print_env_vars()
 
         self.executor.execute_command(
-            "pip install 'benchconnect@git+https://github.com/conbench/conbench.git@main#subdirectory=benchconnect' && R --vanilla -e 'stopifnot(arrowbench:::benchconnect_available())'",
+            "pip install 'benchconnect@git+https://github.com/arctosalliance/conbench.git@main#subdirectory=benchconnect' && R --vanilla -e 'stopifnot(arrowbench:::benchconnect_available())'",
             path=self.root,
             exit_on_failure=True,
         )

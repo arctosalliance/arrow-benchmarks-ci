@@ -304,6 +304,24 @@ variable "github_api_token" {
     default     = ""
 }
 
+variable "github_app_id" {
+    description = "GitHub App ID (optional)"
+    type        = string
+    default     = ""
+}
+
+variable "github_app_private_key_path" {
+    description = "Path to GitHub App private key PEM file (optional)"
+    type        = string
+    default     = ""
+}
+
+variable "github_app_installation_id" {
+    description = "GitHub App installation ID (optional)"
+    type        = string
+    default     = ""
+}
+
 variable "max_commits_to_fetch" {
   description = "Maximum number of commits to fetch"
   type        = string

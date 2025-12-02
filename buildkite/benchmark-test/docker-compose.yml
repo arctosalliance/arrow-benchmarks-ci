@@ -10,7 +10,7 @@ services:
       BENCHMARKS_DATA_DIR: "/data"
       CONBENCH_EMAIL: ${CONBENCH_EMAIL}
       CONBENCH_PASSWORD: ${CONBENCH_PASSWORD}"
-      CONBENCH_URL: "https://conbench.ursa.dev"
+      CONBENCH_URL: "https://conbench.arrow-dev.org"
       FILTERS: "${FILTERS:-{}}"
       MACHINE: "docker-container-for-testing-benchmark-builds"
       PYTHON_VERSION: ${PYTHON_VERSION:-3.12}
