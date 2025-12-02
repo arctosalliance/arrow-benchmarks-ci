@@ -8,6 +8,7 @@ steps:
       docker-compose -f envs/test/docker-compose.yml down
       docker-compose -f envs/test/docker-compose.yml build
 #      docker-compose -f envs/test/docker-compose.yml run app pytest -vv tests/
+# TODO: enable these tests later maybe
 
   - label: "Build & Push Arrow BCI API Service Docker Image"
     key: "build-and-push"
