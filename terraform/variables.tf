@@ -135,6 +135,25 @@ variable "db_password" {
   }
 }
 
+variable "db_password_arrow_bci" {
+    description = "Master password for Arrow BCI database"
+    type        = string
+    sensitive   = true
+    default     = ""
+
+  validation {
+    condition     = var.db_password_arrow_bci == "" || length(var.db_password_arrow_bci) >= 8
+    error_message = "Database password must be at least 8 characters long."
+  }
+}
+
+variable "conbench_api_password" {
+    description = "Conbench API password for application access"
+    type        = string
+    sensitive   = true
+    default     = ""
+}
+
 variable "db_backup_retention_period" {
   description = "Number of days to retain automated backups"
   type        = number

@@ -42,7 +42,7 @@ resource "kubernetes_secret" "arrow_bci" {
 
   data = {
     DB_USERNAME         = aws_db_instance.arrow_bci.username
-    DB_PASSWORD         = var.db_password  # Use the same password variable
+    DB_PASSWORD         = var.db_password_arrow_bci  # Use the same password variable
     BUILDKITE_API_TOKEN = var.buildkite_api_token
     GITHUB_API_TOKEN    = var.github_api_token
     SLACK_API_TOKEN     = var.slack_api_token

@@ -176,7 +176,7 @@ resource "aws_db_instance" "arrow_bci" {
   # Database Credentials (not used if restoring from snapshot)
   db_name  = var.db_snapshot_identifier == "" ? var.db_name_arrow_bci : null
   username = var.db_snapshot_identifier == "" ? var.db_username : null
-  password = var.db_snapshot_identifier == "" ? var.db_password : null
+  password = var.db_snapshot_identifier == "" ? var.db_password_arrow_bci : null
 
   # Restore from snapshot
   snapshot_identifier = var.arrow_bci_db_snapshot_identifier
