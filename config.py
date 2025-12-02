@@ -83,7 +83,7 @@ class Config:
     }
 
     MACHINES = {
-        "new-test-mac-arm": {
+        "new-test-mac-arm-1": {
             "info": "Supported benchmark langs: C++, Python, R",
             "default_filters": {
                 "arrow-commit": {
