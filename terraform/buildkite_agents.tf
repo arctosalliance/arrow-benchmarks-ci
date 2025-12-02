@@ -287,7 +287,7 @@ resource "aws_cloudformation_stack" "arrow-bci-benchmark-build-test" {
 }
 
 
-resource "aws_cloudformation_stack" "arm64-t4g-2xlarge-linux" {
+resource "aws_cloudformation_stack" "new-arm64-t4g-2xlarge-linux" {
   name = "new-arm64-t4g-2xlarge-linux"
   parameters = {
     VpcId                                 = aws_vpc.main.id
@@ -315,7 +315,7 @@ resource "aws_cloudformation_stack" "arm64-t4g-2xlarge-linux" {
   tags         = var.default_tags
 }
 
-resource "aws_cloudformation_stack" "amd64-m5-4xlarge-linux" {
+resource "aws_cloudformation_stack" "new-amd64-m5-4xlarge-linux" {
   name = "new-amd64-m5-4xlarge-linux"
   parameters = {
     VpcId                                 = aws_vpc.main.id
@@ -343,7 +343,7 @@ resource "aws_cloudformation_stack" "amd64-m5-4xlarge-linux" {
   tags         = var.default_tags
 }
 
-resource "aws_cloudformation_stack" "amd64-c6a-4xlarge-linux" {
+resource "aws_cloudformation_stack" "new-amd64-c6a-4xlarge-linux" {
   name = "new-amd64-c6a-4xlarge-linux"
   parameters = {
     VpcId                                 = aws_vpc.main.id
