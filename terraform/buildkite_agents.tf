@@ -196,6 +196,7 @@ resource "aws_cloudformation_stack" "conbench" {
     ECRAccessPolicy                       = "full"
     MinSize                               = 0
     MaxSize                               = 2
+    SecretsBucket                         = "${var.buildkite_org}-buildkite-secrets-2"
     # SecretsBucket                         = "${var.buildkite_org}-buildkite-secrets"
   }
   capabilities = [
@@ -225,6 +226,7 @@ resource "aws_cloudformation_stack" "arrow-bci" {
     ECRAccessPolicy                       = "full"
     MinSize                               = 0
     MaxSize                               = 10
+    SecretsBucket                         = "${var.buildkite_org}-buildkite-secrets-2"
     # SecretsBucket                         = "${var.buildkite_org}-buildkite-secrets"
   }
   capabilities = [
@@ -250,6 +252,7 @@ resource "aws_cloudformation_stack" "arrow-bci-test" {
     ECRAccessPolicy                       = "full"
     MinSize                               = 0
     MaxSize                               = 10
+    SecretsBucket                         = "${var.buildkite_org}-buildkite-secrets-2"
     # SecretsBucket                         = "${var.buildkite_org}-buildkite-secrets"
   }
   capabilities = [
@@ -275,6 +278,7 @@ resource "aws_cloudformation_stack" "arrow-bci-benchmark-build-test" {
     ECRAccessPolicy                       = "full"
     MinSize                               = 0
     MaxSize                               = 10
+    SecretsBucket                         = "${var.buildkite_org}-buildkite-secrets-2"
     # SecretsBucket                         = "${var.buildkite_org}-buildkite-secrets"
   }
   capabilities = [
