@@ -26,3 +26,6 @@ terraform.rc
 
 # Ignore lock files (comment this out if you want to version lock files)
 # .terraform.lock.hcl
+
+# Ignore env files meant for secrets bucket
+buildkite_secrets/arrow-bci-benchmark-on-*/env

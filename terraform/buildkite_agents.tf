@@ -304,7 +304,7 @@ resource "aws_cloudformation_stack" "arm64-t4g-2xlarge-linux" {
     ECRAccessPolicy                       = "full"
     MinSize                               = 0
     MaxSize                               = 2
-    # SecretsBucket                         = "${var.buildkite_org}-buildkite-secrets"
+    SecretsBucket                         = "${var.buildkite_org}-buildkite-secrets-2"
   }
   capabilities = [
     "CAPABILITY_IAM",
@@ -332,7 +332,7 @@ resource "aws_cloudformation_stack" "amd64-m5-4xlarge-linux" {
     ECRAccessPolicy                       = "full"
     MinSize                               = 0
     MaxSize                               = 10
-    # SecretsBucket                         = "${var.buildkite_org}-buildkite-secrets"
+    SecretsBucket                         = "${var.buildkite_org}-buildkite-secrets-2"
   }
   capabilities = [
     "CAPABILITY_IAM",
@@ -360,7 +360,7 @@ resource "aws_cloudformation_stack" "amd64-c6a-4xlarge-linux" {
     ECRAccessPolicy                       = "full"
     MinSize                               = 0
     MaxSize                               = 10
-    # SecretsBucket                         = "${var.buildkite_org}-buildkite-secrets"
+    SecretsBucket                         = "${var.buildkite_org}-buildkite-secrets-2"
   }
   capabilities = [
     "CAPABILITY_IAM",

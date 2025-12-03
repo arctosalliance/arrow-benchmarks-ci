@@ -12,9 +12,17 @@ def api_access_token_required(f):
     @wraps(f)
     def decorator(self, *args, **kwargs):
         try:
-            data = jwt.decode(
-                request.headers.get("Authorization").split(" ")[-1], Config.SECRET
-            )
+            auth_header = request.headers.get("Authorization")
+            if not auth_header:
+                log.error("Missing Authorization header")
+                return "Unauthorized", 401
+
+            token = auth_header.split(" ")[-1]
+            if not token:
+                log.error("Empty token in Authorization header")
+                return "Unauthorized", 401
+
+            data = jwt.decode(token, Config.SECRET)
             current_machine = Machine.get(data["machine"])
         except Exception as e:
             log.exception(e)
