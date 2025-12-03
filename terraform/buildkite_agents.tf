@@ -287,14 +287,14 @@ resource "aws_cloudformation_stack" "arrow-bci-benchmark-build-test" {
 }
 
 
-resource "aws_cloudformation_stack" "new-arm64-t4g-2xlarge-linux" {
-  name = "new-arm64-t4g-2xlarge-linux"
+resource "aws_cloudformation_stack" "arm64-t4g-2xlarge-linux" {
+  name = "arm64-t4g-2xlarge-linux"
   parameters = {
     VpcId                                 = aws_vpc.main.id
     Subnets                               = join(",", [aws_subnet.public[0].id, aws_subnet.public[1].id])
     BootstrapScriptUrl                    = var.buildkite_bootstrap_script_url
     BuildkiteAgentTokenParameterStorePath = aws_ssm_parameter.buildkite_agent_token.name
-    BuildkiteQueue                        = "new-arm64-t4g-2xlarge-linux"
+    BuildkiteQueue                        = "arm64-t4g-2xlarge-linux"
     OnDemandPercentage                    = 100
     InstanceTypes                         = "t4g.2xlarge"
     InstanceOperatingSystem               = "linux"
@@ -315,15 +315,15 @@ resource "aws_cloudformation_stack" "new-arm64-t4g-2xlarge-linux" {
   tags         = var.default_tags
 }
 
-resource "aws_cloudformation_stack" "new-amd64-m5-4xlarge-linux" {
-  name = "new-amd64-m5-4xlarge-linux"
+resource "aws_cloudformation_stack" "amd64-m5-4xlarge-linux" {
+  name = "amd64-m5-4xlarge-linux"
   parameters = {
     VpcId                                 = aws_vpc.main.id
     Subnets                               = join(",", [aws_subnet.public[0].id, aws_subnet.public[1].id])
     BootstrapScriptUrl                    = var.buildkite_bootstrap_script_url
     # BootstrapScriptUrl                    = join("", ["s3://", aws_s3_bucket.buildkite_scripts.id, "/", aws_s3_object.setup_script.key])
     BuildkiteAgentTokenParameterStorePath = aws_ssm_parameter.buildkite_agent_token.name
-    BuildkiteQueue                        = "new-amd64-m5-4xlarge-linux"
+    BuildkiteQueue                        = "amd64-m5-4xlarge-linux"
     OnDemandPercentage                    = 100
     InstanceTypes                         = "m5.4xlarge"
     InstanceOperatingSystem               = "linux"
@@ -343,15 +343,15 @@ resource "aws_cloudformation_stack" "new-amd64-m5-4xlarge-linux" {
   tags         = var.default_tags
 }
 
-resource "aws_cloudformation_stack" "new-amd64-c6a-4xlarge-linux" {
-  name = "new-amd64-c6a-4xlarge-linux"
+resource "aws_cloudformation_stack" "amd64-c6a-4xlarge-linux" {
+  name = "amd64-c6a-4xlarge-linux"
   parameters = {
     VpcId                                 = aws_vpc.main.id
     Subnets                               = join(",", [aws_subnet.public[0].id, aws_subnet.public[1].id])
     BootstrapScriptUrl                    = var.buildkite_bootstrap_script_url
     # BootstrapScriptUrl                    = join("", ["s3://", aws_s3_bucket.buildkite_scripts.id, "/", aws_s3_object.setup_script.key])
     BuildkiteAgentTokenParameterStorePath = aws_ssm_parameter.buildkite_agent_token.name
-    BuildkiteQueue                        = "new-amd64-c6a-4xlarge-linux"
+    BuildkiteQueue                        = "amd64-c6a-4xlarge-linux"
     OnDemandPercentage                    = 100
     InstanceTypes                         = "c6a.4xlarge"
     InstanceOperatingSystem               = "linux"

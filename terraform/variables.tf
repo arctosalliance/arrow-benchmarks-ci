@@ -298,6 +298,12 @@ variable "flask_app" {
   default     = "conbench"
 }
 
+variable "flask_app_bci" {
+  description = "Flask application name"
+  type        = string
+  default     = "conbench"
+}
+
 variable "github_api_base_url" {
   description = "GitHub API base URL"
   type        = string

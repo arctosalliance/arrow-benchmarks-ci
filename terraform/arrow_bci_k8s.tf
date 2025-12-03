@@ -18,7 +18,7 @@ resource "kubernetes_config_map" "arrow_bci" {
     DB_PORT                                 = tostring(aws_db_instance.arrow_bci.port)
     DB_NAME                                 = var.db_name_arrow_bci
     ENV                                     = var.environment
-    FLASK_APP                               = var.flask_app
+    FLASK_APP                               = var.flask_app_bci
     GITHUB_API_BASE_URL                     = var.github_api_base_url
     GITHUB_REPO                             = var.github_repo
     GITHUB_REPO_WITH_BENCHMARKABLE_COMMITS  = var.github_repo_with_benchmarkable_commits
