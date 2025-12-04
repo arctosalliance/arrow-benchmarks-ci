@@ -313,7 +313,7 @@ variable "github_api_base_url" {
 variable "github_repo" {
   description = "GitHub repository (format: owner/repo)"
   type        = string
-  default     = "apache/arrow"
+  default     = "arctosalliance/arrow-benchmarks-ci"
 }
 
 variable "github_repo_with_benchmarkable_commits" {

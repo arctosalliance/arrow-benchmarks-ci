@@ -28,5 +28,5 @@ steps:
         -e COMMIT=${BUILDKITE_COMMIT} \
         $(docker build -q .) python -m buildkite.benchmark-test.run_test_builds
     agents:
-      # queue: "arrow-bci"
-      queue: "aws-855673865593-arm64-t4g-2xlarge"
+      queue: "arrow-bci"
+
