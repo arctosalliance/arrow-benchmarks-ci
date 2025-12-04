@@ -481,5 +481,5 @@ variable "slack_api_token" {
 variable "buildkite_secrets_bucket" {
   description = "S3 bucket name for Buildkite secrets"
   type        = string
-  default     = ""
+  default     = "apache-arrow-buildkite-secrets-2"
 }
