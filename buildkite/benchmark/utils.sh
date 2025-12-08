@@ -15,7 +15,36 @@ create_conda_env_for_arrow_commit() {
   compilers \
   python="${PYTHON_VERSION}" \
   pandas \
-  r
+  r \
+  r-duckdb \
+  r-dplyr \
+  r-tidyr \
+  r-tibble \
+  r-stringr \
+  r-stringi \
+  r-rcpp \
+  r-rlang \
+  r-vctrs \
+  r-testthat \
+  r-dbplyr \
+  r-lubridate \
+  r-reticulate \
+  r-knitr \
+  r-rmarkdown \
+  r-remotes \
+  r-bit64 \
+  r-r6 \
+  r-assertthat \
+  r-blob \
+  r-dbi \
+  r-hms \
+  r-purrr \
+  r-tzdb \
+  r-cpp11 \
+  r-decor \
+  r-pkgload \
+  r-brio \
+  r-waldo
 
   source dev/conbench_envs/hooks.sh activate_conda_env_for_benchmark_build
   source dev/conbench_envs/hooks.sh install_arrow_python_dependencies
