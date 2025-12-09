@@ -13,11 +13,10 @@ create_conda_env_for_arrow_commit() {
   --file ci/conda_env_cpp.txt \
   --file ci/conda_env_python.txt \
   compilers \
-  "cmake>=3.25" \
   python="${PYTHON_VERSION}" \
   pandas \
-  r \
-  r-duckdb
+  r-duckdb \
+  r
 
   source dev/conbench_envs/hooks.sh activate_conda_env_for_benchmark_build
   source dev/conbench_envs/hooks.sh install_arrow_python_dependencies
