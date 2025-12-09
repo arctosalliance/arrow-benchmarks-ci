@@ -188,7 +188,8 @@ resource "kubernetes_service" "arrow_bci" {
   }
 
   depends_on = [
-    kubernetes_deployment.arrow_bci
+    kubernetes_deployment.arrow_bci,
+    aws_acm_certificate_validation.arrow_dev
   ]
 }
 

@@ -15,7 +15,7 @@ create_conda_env_for_arrow_commit() {
   compilers \
   python="${PYTHON_VERSION}" \
   pandas \
-  r-duckdb \
+  duckdb-r \
   r
 
   source dev/conbench_envs/hooks.sh activate_conda_env_for_benchmark_build
