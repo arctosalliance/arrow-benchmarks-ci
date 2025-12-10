@@ -164,6 +164,13 @@ resource "aws_iam_policy" "buildkite_agent" {
           "eks:DescribeCluster"
         ]
         Resource = "arn:aws:eks:${var.aws_region}:*:cluster/${var.eks_cluster_name}"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "acm:ListCertificates"
+        ]
+        Resource = "*"
       }
     ]
   })
