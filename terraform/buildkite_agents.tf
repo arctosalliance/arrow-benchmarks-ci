@@ -337,7 +337,7 @@ resource "aws_cloudformation_stack" "amd64-m5-4xlarge-linux" {
     # BootstrapScriptUrl                    = join("", ["s3://", aws_s3_bucket.buildkite_scripts.id, "/", aws_s3_object.setup_script.key])
     BuildkiteAgentTokenParameterStorePath = aws_ssm_parameter.buildkite_agent_token.name
     BuildkiteQueue                        = "amd64-m5-4xlarge-linux"
-    ImageId                               = "ami-0ff2c60291e139614"
+    # ImageId                               = "ami-0ff2c60291e139614"
     OnDemandPercentage                    = 100
     InstanceTypes                         = "m5.4xlarge"
     InstanceOperatingSystem               = "linux"
@@ -366,7 +366,7 @@ resource "aws_cloudformation_stack" "amd64-c6a-4xlarge-linux" {
     # BootstrapScriptUrl                    = join("", ["s3://", aws_s3_bucket.buildkite_scripts.id, "/", aws_s3_object.setup_script.key])
     BuildkiteAgentTokenParameterStorePath = aws_ssm_parameter.buildkite_agent_token.name
     BuildkiteQueue                        = "amd64-c6a-4xlarge-linux"
-    ImageId                               = "ami-0ff2c60291e139614"
+    # ImageId                               = "ami-0ff2c60291e139614"
     OnDemandPercentage                    = 100
     InstanceTypes                         = "c6a.4xlarge"
     InstanceOperatingSystem               = "linux"
