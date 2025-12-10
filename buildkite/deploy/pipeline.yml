@@ -78,9 +78,16 @@ steps:
     command: |
       aws eks --region us-east-1 update-kubeconfig --name ${EKS_CLUSTER}
       kubectl config set-context --current --namespace=${NAMESPACE}
+      # Fetch certificate ARN dynamically from ACM (cert with conbench.arrow-dev.org as primary domain, which also covers *.arrow-dev.org)
+      CERTIFICATE_ARN=$(aws acm list-certificates --region us-east-1 --query "CertificateSummaryList[?DomainName=='conbench.arrow-dev.org'].CertificateArn | [0]" --output text)
+      if [ -z "$CERTIFICATE_ARN" ] || [ "$CERTIFICATE_ARN" = "None" ]; then
+        echo "ERROR: Could not find ACM certificate for *.arrow-dev.org"
+        exit 1
+      fi
+      echo "Using certificate: $CERTIFICATE_ARN"
       cat envs/prod/deploy.yml | sed "\
         s/{{BUILDKITE_COMMIT}}/${BUILDKITE_COMMIT}/g;\
-        s/{{CERTIFICATE_ARN}}/${CERTIFICATE_ARN}/g;\
+        s|{{CERTIFICATE_ARN}}|${CERTIFICATE_ARN}|g;\
         s/{{DOCKER_REGISTRY}}/${DOCKER_REGISTRY}/g;\
         s/{{FLASK_APP}}/${FLASK_APP}/g" | kubectl apply -f -
       kubectl rollout status deployment/arrow-bci-deployment
