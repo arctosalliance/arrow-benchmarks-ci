@@ -230,7 +230,6 @@ resource "buildkite_pipeline" "arrow_bci_pipelines" {
     DB_NAME:              "${var.db_name_arrow_bci}"
     GITHUB_API_TOKEN:     "${var.github_api_token}"
     GITHUB_APP_ID:        "${var.github_app_id}"
-    GITHUB_APP_PRIVATE_KEY: "${var.github_app_private_key_path != "" ? file(var.github_app_private_key_path) : ""}"
     GITHUB_APP_INSTALLATION_ID: "${var.github_app_installation_id}"
     PIPY_API_BASE_URL:    "${var.pypi_api_base_url}"
     PIPY_PROJECT:         "${var.pypi_project}"

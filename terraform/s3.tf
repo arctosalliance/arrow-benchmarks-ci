@@ -37,7 +37,6 @@ locals {
     "amd64-c6a-4xlarge-linux",
     "amd64-m5-4xlarge-linux",
     "arm64-t4g-2xlarge-linux",
-    "schedule-and-publish"
   ]
 
   # # Map of pipeline names to their secret file paths
@@ -61,6 +60,14 @@ resource "aws_s3_object" "benchmark_machine_secrets" {
   tags = local.common_tags
 }
 
+# Upload benchmark machine secrets
+resource "aws_s3_object" "benchmark_machine_secrets2" {
+  bucket = aws_s3_bucket.buildkite_secrets.id
+  key = "new-arrow-bci-schedule-and-publish/env"
+  source = "${path.module}/buildkite_secrets/new-arrow-bci-schedule-and-publish/env"
+  etag = filemd5("${path.module}/buildkite_secrets/new-arrow-bci-schedule-and-publish/env")
+  tags = local.common_tags
+}
 
 # # Upload pipeline secrets
 # resource "aws_s3_object" "pipeline_secrets" {
