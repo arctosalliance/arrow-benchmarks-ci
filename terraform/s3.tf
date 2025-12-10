@@ -36,7 +36,8 @@ locals {
   benchmark_machines = [
     "amd64-c6a-4xlarge-linux",
     "amd64-m5-4xlarge-linux",
-    "arm64-t4g-2xlarge-linux"
+    "arm64-t4g-2xlarge-linux",
+    "schedule-and-publish"
   ]
 
   # # Map of pipeline names to their secret file paths
