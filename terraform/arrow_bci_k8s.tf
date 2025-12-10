@@ -48,6 +48,11 @@ resource "kubernetes_secret" "arrow_bci" {
     SLACK_API_TOKEN     = var.slack_api_token
   }
 
+  # Ignore data changes - Buildkite pipeline manages additional secrets via kubectl apply
+  lifecycle {
+    ignore_changes = [data]
+  }
+
   depends_on = [
     aws_eks_cluster.conbench,
     aws_eks_node_group.conbench
@@ -141,6 +146,14 @@ resource "kubernetes_deployment" "arrow_bci" {
         termination_grace_period_seconds = 5
       }
     }
+  }
+
+  # Ignore changes managed by Buildkite pipeline or kubectl operations
+  lifecycle {
+    ignore_changes = [
+      spec[0].template[0].spec[0].container[0].image,
+      spec[0].template[0].metadata[0].annotations["kubectl.kubernetes.io/restartedAt"]
+    ]
   }
 
   depends_on = [
