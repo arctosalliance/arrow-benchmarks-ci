@@ -186,8 +186,9 @@ resource "aws_cloudformation_stack" "conbench" {
     BootstrapScriptUrl                    = var.buildkite_bootstrap_script_url
     BuildkiteAgentTokenParameterStorePath = aws_ssm_parameter.buildkite_agent_token.name
     BuildkiteQueue                        = "new-conbench"
+    # TODO: currently not built with packer, perhaps we should do that
     # Image built on this same folder, packer subfolder
-    # ImageId                               = "ami-0f366f62f5c4cd839"
+    ImageId                               = "ami-0ff2c60291e139614"
     # InstanceType                          = "t3.micro"
     InstanceOperatingSystem               = "linux"
     InstanceRoleName                      = "buildkite-agent-stack-conbench-Role"
@@ -218,6 +219,7 @@ resource "aws_cloudformation_stack" "arrow-bci" {
     BootstrapScriptUrl                    = var.buildkite_bootstrap_script_url
     BuildkiteAgentTokenParameterStorePath = aws_ssm_parameter.buildkite_agent_token.name
     BuildkiteQueue                        = "new-arrow-bci"
+    ImageId                               = "ami-0ff2c60291e139614"
     # InstanceType                          = "t3.micro"
     InstanceOperatingSystem               = "linux"
     InstanceRoleName                      = "buildkite-agent-stack-arrow-bci-Role"
@@ -299,10 +301,10 @@ resource "aws_cloudformation_stack" "arm64-t4g-2xlarge-linux" {
     BootstrapScriptUrl                    = var.buildkite_bootstrap_script_url
     BuildkiteAgentTokenParameterStorePath = aws_ssm_parameter.buildkite_agent_token.name
     BuildkiteQueue                        = "arm64-t4g-2xlarge-linux"
+    ImageId                               = "ami-015188a01f7874b28"
     OnDemandPercentage                    = 100
     InstanceTypes                         = "t4g.2xlarge"
     InstanceOperatingSystem               = "linux"
-    # ManagedPolicyARNs                     = join(",", [data.aws_iam_policy.buildkite_agent.arn, "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"])
     ManagedPolicyARNs                     = join(",", [aws_iam_policy.buildkite_agent.arn, "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"])
     AgentsPerInstance                     = 1
     ECRAccessPolicy                       = "full"
@@ -328,6 +330,7 @@ resource "aws_cloudformation_stack" "amd64-m5-4xlarge-linux" {
     # BootstrapScriptUrl                    = join("", ["s3://", aws_s3_bucket.buildkite_scripts.id, "/", aws_s3_object.setup_script.key])
     BuildkiteAgentTokenParameterStorePath = aws_ssm_parameter.buildkite_agent_token.name
     BuildkiteQueue                        = "amd64-m5-4xlarge-linux"
+    ImageId                               = "ami-0ff2c60291e139614"
     OnDemandPercentage                    = 100
     InstanceTypes                         = "m5.4xlarge"
     InstanceOperatingSystem               = "linux"
@@ -356,6 +359,7 @@ resource "aws_cloudformation_stack" "amd64-c6a-4xlarge-linux" {
     # BootstrapScriptUrl                    = join("", ["s3://", aws_s3_bucket.buildkite_scripts.id, "/", aws_s3_object.setup_script.key])
     BuildkiteAgentTokenParameterStorePath = aws_ssm_parameter.buildkite_agent_token.name
     BuildkiteQueue                        = "amd64-c6a-4xlarge-linux"
+    ImageId                               = "ami-0ff2c60291e139614"
     OnDemandPercentage                    = 100
     InstanceTypes                         = "c6a.4xlarge"
     InstanceOperatingSystem               = "linux"
