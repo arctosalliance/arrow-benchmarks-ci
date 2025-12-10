@@ -78,16 +78,11 @@ steps:
     command: |
       aws eks --region us-east-1 update-kubeconfig --name ${EKS_CLUSTER}
       kubectl config set-context --current --namespace=${NAMESPACE}
-      # Fetch certificate ARN dynamically from ACM (cert with conbench.arrow-dev.org as primary domain, which also covers *.arrow-dev.org)
-      export CERT_ARN="$(aws acm list-certificates --region us-east-1 --query "CertificateSummaryList[?DomainName=='conbench.arrow-dev.org'].CertificateArn | [0]" --output text)"
-      if [ -z "${CERT_ARN}" ] || [ "${CERT_ARN}" = "None" ]; then
-        echo "ERROR: Could not find ACM certificate for *.arrow-dev.org"
-        exit 1
-      fi
-      echo "Using certificate: ${CERT_ARN}"
+      # ACM certificate ARN for *.arrow-dev.org (managed by Terraform in acm.tf)
+      # Hardcoded because Buildkite interpolates ${VAR} before bash runs
       cat envs/prod/deploy.yml | sed "\
         s/{{BUILDKITE_COMMIT}}/${BUILDKITE_COMMIT}/g;\
-        s|{{CERTIFICATE_ARN}}|${CERT_ARN}|g;\
+        s|{{CERTIFICATE_ARN}}|arn:aws:acm:us-east-1:855673865593:certificate/7a180f50-9ee8-42ff-bbb7-2e6a22bfb423|g;\
         s/{{DOCKER_REGISTRY}}/${DOCKER_REGISTRY}/g;\
         s/{{FLASK_APP}}/${FLASK_APP}/g" | kubectl apply -f -
       kubectl rollout status deployment/arrow-bci-deployment
