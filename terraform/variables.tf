@@ -350,7 +350,7 @@ variable "github_app_installation_id" {
 variable "max_commits_to_fetch" {
   description = "Maximum number of commits to fetch"
   type        = string
-  default     = "2"
+  default     = "1"
 }
 
 variable "pypi_api_base_url" {
