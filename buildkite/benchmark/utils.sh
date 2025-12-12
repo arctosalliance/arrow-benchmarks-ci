@@ -68,7 +68,6 @@ clone_repo() {
 
 build_arrow_r() {
   pushd $REPO_DIR
-  export R_PRUNE_DEPS=true
   source dev/conbench_envs/hooks.sh build_arrow_r
   popd
 }
