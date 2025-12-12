@@ -130,7 +130,7 @@ class Config:
             "supported_filters": ["lang", "name", "command"],
             "publish_benchmark_results": True,
             "max_builds": 2,
-            "build_timeout": 180,
+            "build_timeout": 480,
         },
         "amd64-m5-4xlarge-linux": {
             "info": "Supported benchmark langs: Python, R, Java, JavaScript, C++",
