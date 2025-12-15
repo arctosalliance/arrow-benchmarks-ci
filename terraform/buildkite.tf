@@ -258,10 +258,10 @@ resource "buildkite_pipeline" "arrow_bci_pipelines" {
   cancel_intermediate_builds = each.value.cancel_intermediate_builds
 }
 
-# resource "buildkite_pipeline_schedule" "every_15_mins" {
-#   pipeline_id = buildkite_pipeline.arrow_bci_pipelines["new-arrow-bci-schedule-and-publish"].id
-#   label       = "Every 15 minutes"
-#   cronline    = "*/15 * * * *"
-#   branch      = buildkite_pipeline.arrow_bci_pipelines["new-arrow-bci-schedule-and-publish"].default_branch
-#   enabled     = true
-# }
+resource "buildkite_pipeline_schedule" "every_15_mins" {
+  pipeline_id = buildkite_pipeline.arrow_bci_pipelines["new-arrow-bci-schedule-and-publish"].id
+  label       = "Every 15 minutes"
+  cronline    = "*/15 * * * *"
+  branch      = buildkite_pipeline.arrow_bci_pipelines["new-arrow-bci-schedule-and-publish"].default_branch
+  enabled     = true
+}
