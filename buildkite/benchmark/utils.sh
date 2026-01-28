@@ -14,8 +14,7 @@ create_conda_env_for_arrow_commit() {
   --file ci/conda_env_python.txt \
   compilers \
   python="${PYTHON_VERSION}" \
-  pandas \
-  r
+  pandas
 
   source dev/conbench_envs/hooks.sh activate_conda_env_for_benchmark_build
   source dev/conbench_envs/hooks.sh install_arrow_python_dependencies
