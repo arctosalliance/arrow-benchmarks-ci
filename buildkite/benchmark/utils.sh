@@ -26,6 +26,7 @@ create_conda_env_for_arrow_commit() {
   source dev/conbench_envs/hooks.sh build_arrow_cpp
   source dev/conbench_envs/hooks.sh build_arrow_python
   source dev/conbench_envs/hooks.sh install_archery
+  source dev/conbench_envs/hooks.sh install_r
   popd
 }
 
