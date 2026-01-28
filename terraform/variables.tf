@@ -34,7 +34,7 @@ variable "vpc_cidr" {
 variable "kubernetes_version" {
   description = "Kubernetes version for EKS cluster"
   type        = string
-  default     = "1.28"
+  default     = "1.34"
 }
 
 variable "node_group_desired_size" {
@@ -468,11 +468,25 @@ variable "arrow_bci_image" {
 variable "arrow_bci_replicas" {
   description = "Number of replicas for Arrow BCI deployment"
   type        = number
-  default     = 1
+  default     = 2
 }
 
 variable "slack_api_token" {
   description = "Slack API token for notifications"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
+variable "arrow_bci_secret" {
+  description = "Secret key for Arrow BCI JWT authentication"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
+variable "github_webhook_secret" {
+  description = "GitHub webhook secret for verifying @ursabot benchmark commands on apache/arrow"
   type        = string
   sensitive   = true
   default     = ""

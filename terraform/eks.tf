@@ -37,6 +37,7 @@ resource "aws_eks_node_group" "conbench" {
 
   instance_types = var.node_instance_types
   disk_size      = var.node_disk_size
+  ami_type       = "BOTTLEROCKET_x86_64"
 
   # Update strategy
   update_config {

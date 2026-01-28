@@ -45,7 +45,9 @@ resource "kubernetes_secret" "arrow_bci" {
     DB_PASSWORD         = var.db_password_arrow_bci  # Use the same password variable
     BUILDKITE_API_TOKEN = var.buildkite_api_token
     GITHUB_API_TOKEN    = var.github_api_token
+    GITHUB_SECRET       = var.github_webhook_secret  # Webhook secret for @ursabot commands
     SLACK_API_TOKEN     = var.slack_api_token
+    SECRET              = var.arrow_bci_secret
   }
 
   # Ignore data changes - Buildkite pipeline manages additional secrets via kubectl apply
@@ -96,7 +98,7 @@ resource "kubernetes_deployment" "arrow_bci" {
         container {
           name    = "arrow-bci"
           image   = var.arrow_bci_image
-          command = ["gunicorn", "-b", "0.0.0.0:5000", "-w", "5", "app:app", "--access-logfile=-", "--error-logfile=-", "--preload"]
+          command = ["gunicorn", "-b", "0.0.0.0:5000", "-w", "10", "app:app", "--access-logfile=-", "--error-logfile=-", "--preload"]
 
           image_pull_policy = "Always"
 
@@ -117,6 +119,11 @@ resource "kubernetes_deployment" "arrow_bci" {
             }
           }
 
+          env {
+            name  = "GUNICORN_WORKERS"
+            value = "10"
+          }
+
           readiness_probe {
             http_get {
               path   = "/health-check"
@@ -125,7 +132,7 @@ resource "kubernetes_deployment" "arrow_bci" {
             }
             initial_delay_seconds = 5
             period_seconds        = 10
-            timeout_seconds       = 20
+            timeout_seconds       = 30
             success_threshold     = 2
             failure_threshold     = 1
           }
@@ -137,8 +144,8 @@ resource "kubernetes_deployment" "arrow_bci" {
               scheme = "HTTP"
             }
             initial_delay_seconds = 60
-            period_seconds        = 30
-            timeout_seconds       = 5
+            period_seconds        = 60
+            timeout_seconds       = 30
             failure_threshold     = 3
           }
         }
