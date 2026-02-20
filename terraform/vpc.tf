@@ -133,11 +133,38 @@ resource "aws_route_table" "private" {
   )
 }
 
+# Additional Public Subnets in extra AZs (for spot instance availability)
+# Uses CIDR indices 4, 5 to avoid overlap with private subnets (indices 2, 3)
+resource "aws_subnet" "public_extra" {
+  count = 2
+
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = cidrsubnet(var.vpc_cidr, 4, count.index + 4)
+  availability_zone       = data.aws_availability_zones.available.names[count.index + 2]
+  map_public_ip_on_launch = true
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${local.cluster_name}-public-${count.index + 3}"
+      "kubernetes.io/cluster/${local.cluster_name}" = "shared"
+      "kubernetes.io/role/elb"                      = "1"
+    }
+  )
+}
+
 # Route Table Associations - Public
 resource "aws_route_table_association" "public" {
   count = 2
 
   subnet_id      = aws_subnet.public[count.index].id
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "public_extra" {
+  count = 2
+
+  subnet_id      = aws_subnet.public_extra[count.index].id
   route_table_id = aws_route_table.public.id
 }
 
