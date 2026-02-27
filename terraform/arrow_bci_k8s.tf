@@ -41,18 +41,17 @@ resource "kubernetes_secret" "arrow_bci" {
   }
 
   data = {
-    DB_USERNAME         = aws_db_instance.arrow_bci.username
-    DB_PASSWORD         = var.db_password_arrow_bci  # Use the same password variable
-    BUILDKITE_API_TOKEN = var.buildkite_api_token
-    GITHUB_API_TOKEN    = var.github_api_token
-    GITHUB_SECRET       = var.github_webhook_secret  # Webhook secret for @ursabot commands
-    SLACK_API_TOKEN     = var.slack_api_token
-    SECRET              = var.arrow_bci_secret
-  }
-
-  # Ignore data changes - Buildkite pipeline manages additional secrets via kubectl apply
-  lifecycle {
-    ignore_changes = [data]
+    BUILDKITE_API_TOKEN                = var.buildkite_api_token
+    DB_HOST                            = aws_db_instance.arrow_bci.address
+    DB_NAME                            = var.db_name_arrow_bci
+    DB_PASSWORD                        = var.db_password_arrow_bci
+    DB_USERNAME                        = aws_db_instance.arrow_bci.username
+    GITHUB_API_TOKEN                   = var.github_api_token
+    GITHUB_SECRET                      = var.github_webhook_secret
+    SECRET                             = var.arrow_bci_secret
+    SLACK_API_TOKEN                    = var.slack_api_token
+    SLACK_CHANNEL_FOR_BENCHMARK_RESULTS = var.slack_channel_for_benchmark_results
+    SLACK_USER_ID_FOR_WARNINGS         = var.slack_user_id_for_warnings
   }
 
   depends_on = [
@@ -98,13 +97,23 @@ resource "kubernetes_deployment" "arrow_bci" {
         container {
           name    = "arrow-bci"
           image   = var.arrow_bci_image
-          command = ["gunicorn", "-b", "0.0.0.0:5000", "-w", "10", "app:app", "--access-logfile=-", "--error-logfile=-", "--preload"]
+          command = ["gunicorn", "-b", "0.0.0.0:5000", "-w", "2", "--threads", "16", "-k", "gthread", "app:app", "--access-logfile=-", "--error-logfile=-", "--timeout", "10", "--keep-alive", "0", "--graceful-timeout", "5"]
 
           image_pull_policy = "Always"
 
           port {
             container_port = 5000
             name           = "http"
+          }
+
+          resources {
+            requests = {
+              cpu    = "100m"
+              memory = "256Mi"
+            }
+            limits = {
+              memory = "512Mi"
+            }
           }
 
           env_from {
@@ -121,32 +130,28 @@ resource "kubernetes_deployment" "arrow_bci" {
 
           env {
             name  = "GUNICORN_WORKERS"
-            value = "10"
+            value = "2"
           }
 
           readiness_probe {
-            http_get {
-              path   = "/health-check"
-              port   = 5000
-              scheme = "HTTP"
+            tcp_socket {
+              port = 5000
             }
-            initial_delay_seconds = 5
-            period_seconds        = 10
-            timeout_seconds       = 30
-            success_threshold     = 2
-            failure_threshold     = 1
+            initial_delay_seconds = 10
+            period_seconds        = 15
+            timeout_seconds       = 5
+            success_threshold     = 1
+            failure_threshold     = 3
           }
 
           liveness_probe {
-            http_get {
-              path   = "/health-check"
-              port   = 5000
-              scheme = "HTTP"
+            tcp_socket {
+              port = 5000
             }
-            initial_delay_seconds = 60
-            period_seconds        = 60
-            timeout_seconds       = 30
-            failure_threshold     = 3
+            initial_delay_seconds = 30
+            period_seconds        = 30
+            timeout_seconds       = 5
+            failure_threshold     = 5
           }
         }
 
@@ -186,7 +191,8 @@ resource "kubernetes_service" "arrow_bci" {
   }
 
   spec {
-    type = "LoadBalancer"
+    type                    = "LoadBalancer"
+    external_traffic_policy = "Local"
 
     selector = {
       app = "arrow-bci"

@@ -20,25 +20,36 @@ spec:
       containers:
       - name: arrow-bci
         image: "{{DOCKER_REGISTRY}}/{{FLASK_APP}}:{{BUILDKITE_COMMIT}}"
-        command: ["gunicorn", "-b", "0.0.0.0:5000", "-w", "5", "app:app", "--access-logfile=-", "--error-logfile=-", "--preload"]
+        command: ["gunicorn", "-b", "0.0.0.0:5000", "-w", "2", "--threads", "16", "-k", "gthread", "app:app", "--access-logfile=-", "--error-logfile=-", "--timeout", "10", "--keep-alive", "0", "--graceful-timeout", "5"]
         imagePullPolicy: "Always"
         ports:
           - containerPort: 5000
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            memory: "512Mi"
         envFrom:
           - configMapRef:
               name: arrow-bci-config
           - secretRef:
               name: arrow-bci-secrets
         readinessProbe:
-          failureThreshold: 1
-          httpGet:
-            path: /health-check
+          tcpSocket:
             port: 5000
-            scheme: HTTP
-          initialDelaySeconds: 5
-          periodSeconds: 10
-          successThreshold: 2
-          timeoutSeconds: 20
+          initialDelaySeconds: 10
+          periodSeconds: 15
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        livenessProbe:
+          tcpSocket:
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 5
       terminationGracePeriodSeconds: 5
 ---
 apiVersion: v1
@@ -64,40 +75,6 @@ spec:
     targetPort: 5000
     protocol: TCP
   type: LoadBalancer
+  externalTrafficPolicy: Local
   selector:
     app: "arrow-bci"
-# Ingress removed - using LoadBalancer service type instead
-# Ingress requires ALB controller which is not installed
-# ---
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: "arrow-bci-ingress"
-#   namespace: "default"
-#   annotations:
-#     kubernetes.io/ingress.class: alb
-#     alb.ingress.kubernetes.io/scheme: internet-facing
-#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-#     alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
-#     alb.ingress.kubernetes.io/certificate-arn: {{CERTIFICATE_ARN}}
-#   labels:
-#     app: arrow-bci-ingress
-# spec:
-#   rules:
-#   - http:
-#       paths:
-#       - backend:
-#           service:
-#             name: ssl-redirect
-#             port:
-#               name: use-annotation
-#         path: /*
-#         pathType: ImplementationSpecific
-#       - backend:
-#           service:
-#             name: arrow-bci-service
-#             port:
-#               number: 80
-#         path: /*
-#         pathType: ImplementationSpecific
-

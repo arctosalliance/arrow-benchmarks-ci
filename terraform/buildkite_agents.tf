@@ -338,7 +338,7 @@ resource "aws_cloudformation_stack" "amd64-m5-4xlarge-linux" {
     BuildkiteAgentTokenParameterStorePath = aws_ssm_parameter.buildkite_agent_token.name
     BuildkiteQueue                        = "amd64-m5-4xlarge-linux"
     ImageId                               = "ami-0ff2c60291e139614"
-    OnDemandPercentage                    = 0
+    OnDemandPercentage                    = 80
     InstanceTypes                         = "m5.4xlarge"
     InstanceOperatingSystem               = "linux"
     ManagedPolicyARNs                     = join(",", [aws_iam_policy.buildkite_agent.arn, "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"])

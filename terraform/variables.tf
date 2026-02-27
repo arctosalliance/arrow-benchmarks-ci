@@ -492,6 +492,18 @@ variable "github_webhook_secret" {
   default     = ""
 }
 
+variable "slack_channel_for_benchmark_results" {
+  description = "Slack channel ID for posting benchmark results"
+  type        = string
+  default     = ""
+}
+
+variable "slack_user_id_for_warnings" {
+  description = "Slack user ID to mention in warning messages"
+  type        = string
+  default     = ""
+}
+
 variable "buildkite_secrets_bucket" {
   description = "S3 bucket name for Buildkite secrets"
   type        = string
