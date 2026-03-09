@@ -33,46 +33,10 @@ steps:
       docker pull ${DOCKER_REGISTRY}/${FLASK_APP}:${BUILDKITE_COMMIT}
       docker-compose -f envs/prod/docker-compose.yml run app alembic upgrade head
 
-  - label: "Deploy Secrets & Config"
-    key: "deploy-secrets-and-config"
-    if: build.branch == 'main'
-    depends_on: "run-migrations"
-    concurrency: 1
-    concurrency_group: "arrow-bci-deploy"
-    command: |
-      aws eks --region us-east-1 update-kubeconfig --name ${EKS_CLUSTER}
-      kubectl config set-context --current --namespace=${NAMESPACE}
-      cat envs/prod/secrets.yml | sed "\
-        s/{{BUILDKITE_API_TOKEN}}/$(echo -n $BUILDKITE_API_TOKEN | base64 -w 0)/g;\
-        s/{{DB_HOST}}/$(echo -n $DB_HOST | base64 -w 0)/g;\
-        s/{{DB_NAME}}/$(echo -n $DB_NAME | base64 -w 0)/g;\
-        s/{{DB_PASSWORD}}/$(echo -n $DB_PASSWORD | base64 -w 0)/g;\
-        s/{{DB_USERNAME}}/$(echo -n $DB_USERNAME | base64 -w 0)/g;\
-        s/{{GITHUB_API_TOKEN}}/$(echo -n $GITHUB_API_TOKEN | base64 -w 0)/g;\
-        s/{{GITHUB_SECRET}}/$(echo -n $GITHUB_SECRET | base64 -w 0)/g;\
-        s/{{SECRET}}/$(echo -n $SECRET | base64 -w 0)/g;\
-        s/{{SLACK_API_TOKEN}}/$(echo -n $SLACK_API_TOKEN | base64 -w 0)/g;\
-        s/{{SLACK_CHANNEL_FOR_BENCHMARK_RESULTS}}/$(echo -n $SLACK_CHANNEL_FOR_BENCHMARK_RESULTS | base64 -w 0)/g;\
-        s/{{SLACK_USER_ID_FOR_WARNINGS}}/$(echo -n $SLACK_USER_ID_FOR_WARNINGS | base64 -w 0)/g" | kubectl apply -f -
-      cat envs/prod/config.yml | sed "\
-        s,{{BUILDKITE_API_BASE_URL}},${BUILDKITE_API_BASE_URL},g;\
-        s,{{BUILDKITE_ORG}},${BUILDKITE_ORG},g;\
-        s,{{CONBENCH_URL}},${CONBENCH_URL},g;\
-        s,{{DB_PORT}},${DB_PORT},g;\
-        s,{{ENV}},${ENV},g;\
-        s,{{FLASK_APP}},${FLASK_APP},g;\
-        s,{{GITHUB_API_BASE_URL}},${GITHUB_API_BASE_URL},g;\
-        s,{{GITHUB_REPO}},${GITHUB_REPO},g;\
-        s,{{GITHUB_REPO_WITH_BENCHMARKABLE_COMMITS}},${GITHUB_REPO_WITH_BENCHMARKABLE_COMMITS},g;\
-        s,{{MAX_COMMITS_TO_FETCH}},${MAX_COMMITS_TO_FETCH},g;\
-        s,{{PIPY_API_BASE_URL}},${PIPY_API_BASE_URL},g;\
-        s,{{PIPY_PROJECT}},${PIPY_PROJECT},g;\
-        s,{{SLACK_API_BASE_URL}},${SLACK_API_BASE_URL},g" | kubectl apply -f -
-
   - label: "Deploy Arrow BCI API Service"
     key: "deploy"
     if: build.branch == 'main'
-    depends_on: "deploy-secrets-and-config"
+    depends_on: "run-migrations"
     concurrency: 1
     concurrency_group: "arrow-bci-deploy"
     command: |

@@ -241,6 +241,7 @@ resource "buildkite_pipeline" "arrow_bci_pipelines" {
     BUILDKITE_API_TOKEN:  "${var.buildkite_api_token}"
     EKS_CLUSTER:          "${var.eks_cluster_name}"
     SLACK_API_BASE_URL:   "${var.slack_api_base_url}"
+    NAMESPACE:            "default"
   agents:
     queue: "${each.value.queue}"
   steps:
