@@ -1,5 +1,20 @@
 #!/bin/bash
 
+install_and_configure_sccache() {
+  # Install sccache using Arrow's install script
+  pushd $REPO_DIR
+  ci/scripts/install_sccache.sh unknown-linux-musl /usr/local/bin
+  popd
+
+  # Configure sccache to use S3
+  export SCCACHE_BUCKET="arrow-benchmarks-sccache"
+  export SCCACHE_REGION="us-east-1"
+
+  # Start sccache server and show stats
+  sccache --start-server || true
+  sccache --show-stats
+}
+
 init_conda() {
   eval "$(command "$HOME/miniconda3/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
 }
@@ -115,6 +130,7 @@ create_conda_env_and_run_benchmarks() {
       export REPO=https://github.com/apache/arrow.git
       export REPO_DIR=arrow
       clone_repo
+      install_and_configure_sccache
       # retry this sometimes-flaky step
       create_conda_env_for_arrow_commit || create_conda_env_for_arrow_commit
       test_pyarrow_is_built
