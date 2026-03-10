@@ -2,9 +2,12 @@
 
 install_and_configure_sccache() {
   # Install sccache using Arrow's install script
+  local sccache_dir="$HOME/.local/bin"
+  mkdir -p "$sccache_dir"
   pushd $REPO_DIR
-  ci/scripts/install_sccache.sh unknown-linux-musl /usr/local/bin
+  ci/scripts/install_sccache.sh unknown-linux-musl "$sccache_dir"
   popd
+  export PATH="$sccache_dir:$PATH"
 
   # Configure sccache to use S3
   export SCCACHE_BUCKET="arrow-benchmarks-sccache"
