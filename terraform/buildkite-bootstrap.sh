@@ -1,12 +1,12 @@
 #!/bin/bash
+set -euo pipefail
 
 # Set NOPASSWD for buildkite-agent user
 echo "buildkite-agent ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
 
 # Install Arrow C++ Dependencies
-sudo su
-yum update -y -q && \
-    yum install -y -q \
+sudo yum update -y -q && \
+    sudo yum install -y -q \
         autoconf \
         ca-certificates \
         cmake \
@@ -22,15 +22,14 @@ yum update -y -q && \
         wget
 
 # Install Arrow Python Dependencies
-yum update -y -q && \
-    yum install -y -q \
-        python3 \
-        python3-pip
+sudo yum install -y -q \
+    python3 \
+    python3-pip
 
 # Install kubectl
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')/kubectl"
 chmod +x kubectl
-mv kubectl /usr/local/bin/
+sudo mv kubectl /usr/local/bin/
 
 # Install Conda
 case $( uname -m ) in
@@ -41,4 +40,5 @@ case $( uname -m ) in
 esac
 curl -LO https://repo.anaconda.com/miniconda/$conda_installer
 bash $conda_installer -b -p "/var/lib/buildkite-agent/miniconda3"
+chown -R buildkite-agent:buildkite-agent /var/lib/buildkite-agent/miniconda3
 su - buildkite-agent -c "/var/lib/buildkite-agent/miniconda3/bin/conda init bash"
