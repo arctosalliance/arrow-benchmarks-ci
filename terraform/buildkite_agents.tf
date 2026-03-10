@@ -171,6 +171,21 @@ resource "aws_iam_policy" "buildkite_agent" {
           "acm:ListCertificates"
         ]
         Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Resource = "arn:aws:s3:::arrow-benchmarks-sccache/*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:ListBucket"
+        ]
+        Resource = "arn:aws:s3:::arrow-benchmarks-sccache"
       }
     ]
   })
