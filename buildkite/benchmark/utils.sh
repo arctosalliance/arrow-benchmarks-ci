@@ -9,9 +9,11 @@ install_and_configure_sccache() {
   popd
   export PATH="$sccache_dir:$PATH"
 
-  # Configure sccache to use S3
+  # Configure sccache to use S3 with architecture-specific prefix
+  # to prevent arm64 and x86_64 machines from overwriting each other's cache
   export SCCACHE_BUCKET="arrow-benchmarks-sccache"
   export SCCACHE_REGION="us-east-1"
+  export SCCACHE_S3_KEY_PREFIX="$(uname -m)"
 
   # Start sccache server and show stats
   sccache --start-server || true
