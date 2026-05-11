@@ -34,6 +34,7 @@ create_conda_env_for_arrow_commit() {
   --file ci/conda_env_python.txt \
   compilers \
   python="${PYTHON_VERSION}" \
+  pip \
   pandas \
   r
 
