@@ -1,6 +1,15 @@
 #!/bin/bash
 
 install_and_configure_sccache() {
+  # sccache here is backed by an S3 bucket that only the EC2 benchmark agents
+  # have IAM access to (and the released binary target is Linux-only). On macOS
+  # skip it; the conda-forge `ccache` in the build env still gives local caching
+  # that persists across builds.
+  if [ "$(uname)" = "Darwin" ]; then
+    echo "Skipping sccache setup on macOS"
+    return 0
+  fi
+
   # Install sccache using Arrow's install script
   local sccache_dir="$HOME/.local/bin"
   mkdir -p "$sccache_dir"

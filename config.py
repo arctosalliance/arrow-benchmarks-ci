@@ -83,22 +83,24 @@ class Config:
     }
 
     MACHINES = {
-        # "test-mac-arm": {
-        #     "info": "Supported benchmark langs: C++, Python, R",
-        #     "default_filters": {
-        #         "arrow-commit": {
-        #             "langs": {
-        #                 "C++": {"names": ["cpp-micro"]},
-        #                 "R": {"names": ["tpch"]},
-        #             }
-        #         },
-        #         **_SKIP_STRINGS,
-        #     },
-        #     "supported_filters": ["lang", "name"],
-        #     "publish_benchmark_results": True,
-        #     "max_builds": 1,
-        #     "build_timeout": 150,
-        # },
+        "test-mac-arm": {
+            "info": "Supported benchmark langs: C++, Python, R",
+            "default_filters": {
+                "arrow-commit": {
+                    "langs": {
+                        "C++": {"names": ["cpp-micro"]},
+                        "R": {"names": ["tpch"]},
+                    }
+                },
+                **_SKIP_STRINGS,
+            },
+            "supported_filters": ["lang", "name"],
+            "publish_benchmark_results": True,
+            "max_builds": 1,
+            # Cold (no-ccache) Arrow C++/Python/R build on an M1 can take a while;
+            # bump this if the first build times out.
+            "build_timeout": 150,
+        },
         "amd64-c6a-4xlarge-linux": {
             "info": "Supported benchmark langs: C++, Java",
             "default_filters": {
