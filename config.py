@@ -97,9 +97,9 @@ class Config:
             "supported_filters": ["lang", "name"],
             "publish_benchmark_results": True,
             "max_builds": 1,
-            # Cold (no-ccache) Arrow C++/Python/R build on an M1 can take a while;
-            # bump this if the first build times out.
-            "build_timeout": 150,
+            # First (cold) Arrow C++/Python/R build on an M1 burns ~2+ hours before
+            # benchmarks even start; 150 timed out at cpp-micro. Match m5/arm64.
+            "build_timeout": 480,
         },
         "amd64-c6a-4xlarge-linux": {
             "info": "Supported benchmark langs: C++, Java",
